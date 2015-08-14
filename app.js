@@ -1,7 +1,10 @@
 
 var mongoose = require('mongoose');
+var passport = require('passport');
 require('./models/Posts');
 require('./models/Comments');
+require('./models/Users');
+require('./config/passport');
 mongoose.connect('mongodb://root:root@dbh13.mongolab.com:27137/shed_database');
 
 var express = require('express');
@@ -27,6 +30,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(passport.initialize());
 
 app.use('/', routes);
 app.use('/users', users);
@@ -38,6 +42,7 @@ app.use(function(req, res, next) {
   next(err);
 });
 
+app.use('templates/:templateid', routes);
 // error handlers
 
 // development error handler

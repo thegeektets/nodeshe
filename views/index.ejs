@@ -1,11 +1,129 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+
+<html ng-app="shed">
+
+<head>
+  <meta charset="utf-8"/>
+  <title>SHED</title>
+  
+  
+  
+    
+    <!-- Vendor CSS -->
+        <link href="/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
+        <link href="/vendors/bower_components/sweetalert/dist/sweetalert-override.min.css" rel="stylesheet">
+        <link href="/vendors/bower_components/material-design-iconic-font/css/material-design-iconic-font.min.css" rel="stylesheet">
+        <link href="/vendors/socicon/socicon.min.css" rel="stylesheet">
+     
+            
+        <!-- CSS -->
+        <link href="/css/app.min.1.css" rel="stylesheet">
+        <link href="/css/app.min.2.css" rel="stylesheet">
+    </head>
+
+</head>
+
+<body ng-view class="{{bdclass}}">
+  
+
+
+
+
+
+    
+
+
+
+
+
+        <!-- Older IE warning message -->
+        <!--[if lt IE 9]>
+            <div class="ie-warning">
+                <h1 class="c-white">Warning!!</h1>
+                <p>You are using an outdated version of Internet Explorer, please upgrade <br/>to any of the following web browsers to access this website.</p>
+                <div class="iew-container">
+                    <ul class="iew-download">
+                        <li>
+                            <a href="http://www.google.com/chrome/">
+                                <img src="img/browsers/chrome.png" alt="">
+                                <div>Chrome</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.mozilla.org/en-US/firefox/new/">
+                                <img src="img/browsers/firefox.png" alt="">
+                                <div>Firefox</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://www.opera.com">
+                                <img src="img/browsers/opera.png" alt="">
+                                <div>Opera</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.apple.com/safari/">
+                                <img src="img/browsers/safari.png" alt="">
+                                <div>Safari</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
+                                <img src="img/browsers/ie.png" alt="">
+                                <div>IE (New)</div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <p>Sorry for the inconvenience!</p>
+            </div>   
+        <![endif]-->
+
+
+  <script src="/javascripts/lib/angular/angular.js"></script>
+  <script src="/javascripts/js/angular-file-upload.js"></script> 
+  <script src="/javascripts/lib/angular/angular-route.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+  <script type="text/javascript" src="/javascripts/restangular.js"></script>
+  <script src="/javascripts/angularapp.js"></script>
+
+
+<!-- the controllers -->
+<script src="/javascripts/controllers/dashboardController.js"></script>
+
+<script src="/javascripts/controllers/editController.js"></script>
+<script src="/javascripts/controllers/viewbookController.js"></script>
+<script src="/javascripts/controllers/addbookController.js"></script>
+<script src="/javascripts/controllers/athrbookController.js"></script>
+<script src="/javascripts/controllers/borrowController.js"></script>
+<script src="/javascripts/controllers/createController.js"></script>
+<script src="/javascripts/controllers/editbookController.js"></script>
+<script src="/javascripts/controllers/inviteController.js"></script>
+<script src="/javascripts/controllers/listbookController.js"></script>
+<script src="/javascripts/controllers/listController.js"></script>
+<script src="/javascripts/controllers/regController.js"></script>
+<script src="/javascripts/controllers/regnewController.js"></script>
+<script src="/javascripts/js/notificationManager.js"></script>
+<script src="/javascripts/js/angular-filter.min.js"></script>
+
+
+<!-- Javascript Libraries -->
+        <script src="/vendors/bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        
+        <script src="/vendors/bower_components/jquery.nicescroll/jquery.nicescroll.min.js"></script>
+        <script src="/vendors/bower_components/Waves/dist/waves.min.js"></script>
+        <script src="/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
+        <script src="/vendors/bower_components/sweetalert/dist/sweetalert.min.js"></script>
+       
+        
+        <!-- Placeholder for IE9 -->
+        <!--[if IE 9 ]>
+            <script src="/vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
+        <![endif]-->
+        
+        <script src="/js/functions.js"></script>
+        <script src="/js/demo.js"></script>
+</body>
+
 </html>
