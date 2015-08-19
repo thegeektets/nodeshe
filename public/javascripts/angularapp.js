@@ -2,10 +2,19 @@
 var shed = angular.module('shed', ['restangular', 'ngRoute','angular.filter','angularFileUpload']).
 	config(function ($routeProvider, RestangularProvider) {
 		    $routeProvider
-        .when('/auth',{
+        .when('/start',{
             templateUrl:'templates/login.html',
             controller:'LoginCtrl'
         }).
+        when('/reg',{
+            templateUrl:'templates/register.html',
+            controller:'RegCtrl'
+        }).
+        when('/forgot',{
+            templateUrl:'templates/forgot.html',
+            controller:'ForgCtrl'
+        }).
+        
         when('/dashboard', {
         controller: dashCtrl,
         templateUrl: 'templates/users.dashboard.html'
@@ -21,11 +30,7 @@ var shed = angular.module('shed', ['restangular', 'ngRoute','angular.filter','an
          templateUrl: 'templates/users.invite.html'
 
       }).
-       when('/register', {
-         controller: RegCtrl,
-         templateUrl: 'templates/users.signup.html'
-
-      }).
+      
       when('/registernew/:email/:invite', {
           controller: RegnwCtrl,
         templateUrl: 'templates/users.detail.html'
@@ -113,8 +118,8 @@ var shed = angular.module('shed', ['restangular', 'ngRoute','angular.filter','an
 			}
 			return elem;
 		})
-	}).
-  run(function($rootScope, $location) {
+	});
+  /*run(function($rootScope, $location) {
     $rootScope.$on( "$routeChangeStart", function(event, next, current) {
       if (!$rootScope.authService.authorized()) {
           console.log('login required');
@@ -125,12 +130,32 @@ var shed = angular.module('shed', ['restangular', 'ngRoute','angular.filter','an
       }
     });
   });
-	
+	*/
   shed.controller('LoginCtrl', [
 '$scope',
-'$state',
+'$location',
 'auth',
-function($scope, $state, auth){
+function($scope, $location, auth){
+ $scope.bdclass="login-content";
+
+  $scope.user = {};
+
+
+
+  $scope.login = function(){
+    auth.login($scope.user).error(function(error){
+      $scope.error = error;
+    }).then(function(){
+      $location.path('/dashboard');
+    });
+  };
+}]);
+
+  shed.controller('RegCtrl', [
+'$scope',
+'$location',
+'auth',
+function($scope, $location, auth){
  $scope.bdclass="login-content";
 
   $scope.user = {};
@@ -139,86 +164,27 @@ function($scope, $state, auth){
     auth.register($scope.user).error(function(error){
       $scope.error = error;
     }).then(function(){
-      $state.go('home');
+      $location.path('/start');
     });
   };
 
-  $scope.logIn = function(){
-    auth.logIn($scope.user).error(function(error){
-      $scope.error = error;
-    }).then(function(){
-      $state.go('home');
-    });
-  };
+
 }]);
- 
 
 
 
-  
+shed.controller('ForgCtrl', [
+'$scope',
+'$location',
+'auth',
+function($scope, $location, auth){
+ $scope.bdclass="login-content";
 
-	shed.run(function ($rootScope, $location, $http,  $timeout, AuthService, RESTService,Restangular) {
+  $scope.user = {};
 
-
-    // *****
-    // Eager load some data using simple REST client
-    // *****
-
-    $rootScope.restService = RESTService;
-
-    // async load constants
-    $rootScope.constants = [];
-    /*$rootScope.restService.get('data/constants.json', function (data) {
-            $rootScope.constants = data[0];
-        }
-    );
-    */
-    // async load data do be used in table (playgound grid widget)
-    $rootScope.listData = [];
-    /*$rootScope.restService.get('data/generic-list.json', function (data) {
-            $rootScope.listData = data;
-        }
-    );
-    */
-    // *****
-    // Initialize authentication
-    // *****
-  /*  $rootScope.authService = AuthService;
-
-    // text input for login/password (only)
-    //$rootScope.loginInput = 'user@gmail.com';
-    //$login = $rootScope.login;
-
-   	
-    $rootScope.$watch('authService.authorized()', function () {
-
-        // if never logged in, do nothing (otherwise bookmarks fail)
-        if ($rootScope.authService.initialState()) {
-            // we are public browsing
-            return;
-        }
-
-        // instantiate and initialize an auth notification manager
-        $rootScope.authNotifier = new NotificationManager($rootScope);
-
-        // when user logs in, redirect to home
-        if ($rootScope.authService.authorized()) {
-            $location.path("/");
-            $rootScope.authNotifier.notify('information', 'Welcome ' + $rootScope.authService.currentUser() + "!");
-        }
-
-        // when user logs out, redirect to home
-        if (!$rootScope.authService.authorized()) {
-            $location.path("/");
-            $rootScope.authNotifier.notify('information', 'Thanks for visiting.  You have been signed out.');
-        }
-        */
-    }, true);
+}]);
 
 
-
-   
-});
 
 // simple stub that could use a lot of work...
 shed.factory('RESTService',
@@ -284,6 +250,14 @@ shed.factory('auth' , ['$http','$window',function($http , $window){
         });
      };
 
+      auth.login = function(user){
+
+         return $http.post('/login', user).success(function(data){
+          auth.saveToken(data.token);
+
+        });
+     };
+
      auth.logOut = function(){
       $window.localStorage.removeItem('shed-token');
 
@@ -296,6 +270,7 @@ shed.factory('auth' , ['$http','$window',function($http , $window){
 
 
 // simple auth service that can use a lot of work... 
+/*
 shed.factory('AuthService',
     function (Restangular,$rootScope,$http,$location) {
         var currentUser = null;
@@ -356,7 +331,7 @@ shed.factory('AuthService',
                                 $rootScope.user.teamid = team._id.$oid;
                                 $http.put('https://api.mongolab.com/api/1/databases/shed_database/collections/users/'+userid+'/?apiKey=Iwy7zOOBBd6lUzN5jBhLNhv68Wv8UfUl',$rootScope.user);
                                 */
-                             
+                             /*
                                break; 
 
                         }
@@ -382,7 +357,7 @@ shed.factory('AuthService',
                                 $rootScope.user.teamid = team._id.$oid;
                                 $http.put('https://api.mongolab.com/api/1/databases/shed_database/collections/users/'+userid+'/?apiKey=Iwy7zOOBBd6lUzN5jBhLNhv68Wv8UfUl',$rootScope.user);
                                */
-                              
+                              /*
                               break;
                         }
                         
@@ -450,7 +425,7 @@ shed.factory('AuthService',
 
         };
     }
-);
+);*/
 var compareTo = function() {
     return {
       require: "ngModel",

@@ -1,0 +1,59 @@
+        
+       
+        
+        <!-- Register -->
+        <div class="lc-block toggled" id="l-register">
+             SHED REGISTER
+                <hr/>
+            
+         <form ng-submit= "register()">
+             <div ng-show="error" class="alert alert-danger row">
+                <span>{{ error.message }}</span>
+              </div>
+          
+           <div class="input-group m-b-20">
+                <span class="input-group-addon"><i class="md md-person"></i></span>
+                <div class="fg-line">
+                    <input type="text" class="form-control" placeholder="Username" ng-model="user.username">
+                </div>
+            </div>
+            
+            <div class="input-group m-b-20">
+                <span class="input-group-addon"><i class="md md-mail"></i></span>
+                <div class="fg-line">
+                    <input type="text" class="form-control" placeholder="Email Address" ng-model="user.email">
+                </div>
+            </div>
+            
+            <div class="input-group m-b-20">
+                <span class="input-group-addon"><i class="md md-accessibility"></i></span>
+                <div class="fg-line">
+                    <input type="password" class="form-control" placeholder="Password" ng-model="user.password">
+                </div>
+            </div>
+            
+            <div class="clearfix"></div>
+            
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" value="">
+                    <i class="input-helper"></i>
+                    Accept the license agreement
+                </label>
+            </div>
+            
+            <button href=""  type="submit" class="btn btn-login btn-success btn-float"><i class="md md-arrow-forward"></i></button>
+           
+           </form>
+ 
+            <ul class="login-navigation">
+                
+                <li  data-block="#l-register" class="bgm-green"><a  style="color:#fff"href="#/start"> LOGIN</a></li>
+           
+                <li data-block="#l-forget-password" class="bgm-orange"><a style="color:#fff" href="#/forgot">Forgot Password?</a></li>
+            </ul>
+        </div>
+        
+        
+     
+       

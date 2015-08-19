@@ -10,8 +10,6 @@ var UserSchema = new mongoose.Schema({
   salt: String
 });
 
-mongoose.model('User', UserSchema);
-
 UserSchema.methods.setPassword = function(password){
   this.salt = crypto.randomBytes(16).toString('hex');
 
@@ -37,3 +35,5 @@ UserSchema.methods.generateJWT = function() {
     exp: parseInt(exp.getTime() / 1000),
   }, 'SECRET');
 };
+
+mongoose.model('User', UserSchema);
