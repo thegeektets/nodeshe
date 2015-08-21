@@ -1,5 +1,5 @@
 
-var shed = angular.module('shed', ['restangular', 'ngRoute','angular.filter','angularFileUpload']).
+var shed = angular.module('shed', ['restangular', 'ngRoute','angular.filter','angularFileUpload','angular-jwt']).
 	config(function ($routeProvider, RestangularProvider) {
 		    $routeProvider
         .when('/start',{
@@ -119,18 +119,19 @@ var shed = angular.module('shed', ['restangular', 'ngRoute','angular.filter','an
 			return elem;
 		})
 	});
-  /*run(function($rootScope, $location) {
+  shed.run(function($rootScope, $location,auth) {
     $rootScope.$on( "$routeChangeStart", function(event, next, current) {
-      if (!$rootScope.authService.authorized()) {
+      if (!auth.isLoggedIn()) {
           console.log('login required');
-        if ( next.templateUrl === "views/users.login.html" || next.templateUrl === "views/users.signup.html"|| next.templateUrl === "views/users.detail.html") {
+        if ( next.templateUrl === "template/login.html" || next.templateUrl === "template/register.html"|| next.templateUrl === "template/users.detail.html") {
         } else {
-          $location.path("/auth");
+          $location.path("/start");
         }
       }
     });
   });
-	*/
+	
+
   shed.controller('LoginCtrl', [
 '$scope',
 '$location',
@@ -153,9 +154,10 @@ function($scope, $location, auth){
 
   shed.controller('RegCtrl', [
 '$scope',
+'$http',
 '$location',
 'auth',
-function($scope, $location, auth){
+function($scope, $http, $location, auth){
  $scope.bdclass="login-content";
 
   $scope.user = {};
@@ -163,9 +165,14 @@ function($scope, $location, auth){
   $scope.register = function(){
     auth.register($scope.user).error(function(error){
       $scope.error = error;
-    }).then(function(){
-      $location.path('/start');
-    });
+   
+       }).then(function(){
+     
+        $http.post('/team',  $scope.user);
+               
+          $location.path('/start');
+         });
+
   };
 
 
@@ -204,27 +211,107 @@ shed.factory('RESTService',
     }
 );
 
-shed.factory('auth' , ['$http','$window',function($http , $window){
+shed.factory('auth' , ['$http','$window','jwtHelper','$q',function($http , $window ,jwtHelper,$q){
    var auth = {};
+
+
 
 
    auth.saveToken = function (token){
       
-      $window.localStorage['shed-token'] = token;
+      $window.sessionStorage['shed-token'] = token;
 
    };
 
-   auth.getToken = function (){
-     return $window.localStorage['shed-token'];
+   auth.getToken = function (){ 
+     return $window.sessionStorage['shed-token'];
    };
+
+   auth.userProfile = function(){
+    var usertype ='';
+      var deferred = $q.defer();
+
+      if(auth.isLoggedIn()){
+            var token = auth.getToken();
+        var payload = jwtHelper.decodeToken(token);
+
+      $http.get('/profiles/'+payload._id).success(function(data){
+
+              deferred.resolve(data);
+
+        });
+
+        return deferred.promise;
+      }
+      
+
+   }
+
+   auth.currentInvitedby = function(){
+    var usertype ='';
+      var deferred = $q.defer();
+
+      if(auth.isLoggedIn()){
+            var token = auth.getToken();
+        var payload = jwtHelper.decodeToken(token);
+
+      $http.get('/profiles/'+payload._id).success(function(data){
+
+              deferred.resolve(data['0']['invitedby']);
+
+        });
+
+        return deferred.promise;
+      }
+      
+
+   }
+
+    auth.teamId = function(){
+    var usertype ='';
+      var deferred = $q.defer();
+
+      if(auth.isLoggedIn()){
+            var token = auth.getToken();
+        var payload = jwtHelper.decodeToken(token);
+
+      $http.get('/team/'+payload.username).success(function(data){
+
+          deferred.resolve(data);
+
+        });
+
+        return deferred.promise;
+      }
+      
+
+   }
+  auth.userType = function(){
+    var usertype ='';
+      var deferred = $q.defer();
+
+      if(auth.isLoggedIn()){
+            var token = auth.getToken();
+        var payload = jwtHelper.decodeToken(token);
+
+      $http.get('/profiles/'+payload._id).success(function(data){
+
+              deferred.resolve(data);
+
+        });
+
+        return deferred.promise;
+      }
+      
+
+   }
 
    auth.isLoggedIn = function(){
      var token = auth.getToken();
-
+     
      if(token){
-       var payload = JSON.parse($window.atob(token.split('.'[1])));
-
-       return payload.exp > Date.now()/1000;
+       
+      return true;
 
      }
      else {
@@ -237,7 +324,7 @@ shed.factory('auth' , ['$http','$window',function($http , $window){
     auth.currentUser = function(){
       if(auth.isLoggedIn()){
         var token = auth.getToken();
-        var payload = JSON.parse($window.atob(token.split('.')[1]));
+        var payload =jwtHelper.decodeToken(token);
 
         return payload.username;
       }
@@ -267,165 +354,6 @@ shed.factory('auth' , ['$http','$window',function($http , $window){
 
 }]);
 
-
-
-// simple auth service that can use a lot of work... 
-/*
-shed.factory('AuthService',
-    function (Restangular,$rootScope,$http,$location) {
-        var currentUser = null;
-        var authorized = false;
-        var initialState = true;
-        var userid = null;
-        var user_type = null;
-        var currentTeam = null;
-        var invitedby = null;
-        var teamId = null;
-
-
-        return {
-            initialState:function () {
-                return initialState;
-            },
-            login:function (name, password) {
-                
-                $http.get('https://api.mongolab.com/api/1/databases/shed_database/collections/users/?apiKey=Iwy7zOOBBd6lUzN5jBhLNhv68Wv8UfUl').
-      
-             success(function(data) {
-             $rootScope.users = data;
-                     
-             
-
-
-                	for(i = $rootScope.users.length -1;i >= 0 ; i--){
-                  		    user = $rootScope.users[i];
-                			  if(user.username === name  && user.password === password){
-                			  	   currentUser = name;
-                			  	   email = user.email;
-                			  	   userid = user._id.$oid;
-                			  	    authorized = true;
-                	   			   initialState = false;
-                             user_type = user.user_type;
-                             invitedby = user.invitedby;
-                             console.log('logged in');
-                            break;
-                			  }
-                			  else{
-                			  		  authorized = false;
-                               console.log('log in failed');
-                			  }
-
-                		}
-              if(authorized == true){
-                if(user_type == 'admin'){ 
-      					$http.get('https://api.mongolab.com/api/1/databases/shed_database/collections/teams/?apiKey=Iwy7zOOBBd6lUzN5jBhLNhv68Wv8UfUl')
-                .success(function(data){
-                    $rootScope.teams = data;
-                    for(i = $rootScope.teams.length -1;i >= 0 ; i--){
-                          team = $rootScope.teams[i];
-                        if(currentUser == team.admin  ){
-                              teamId = team._id.$oid;
-                              currentTeam = team.name;
-                              /*
-                                $rootScope.user = $http.get('https://api.mongolab.com/api/1/databases/shed_database/collections/users/'+userid+'/?apiKey=Iwy7zOOBBd6lUzN5jBhLNhv68Wv8UfUl');
-                                $rootScope.user.teamid = team._id.$oid;
-                                $http.put('https://api.mongolab.com/api/1/databases/shed_database/collections/users/'+userid+'/?apiKey=Iwy7zOOBBd6lUzN5jBhLNhv68Wv8UfUl',$rootScope.user);
-                                */
-                             /*
-                               break; 
-
-                        }
-                        
-
-                    }
-                });
-              }else{
-      			     $http.get('https://api.mongolab.com/api/1/databases/shed_database/collections/teams/?apiKey=Iwy7zOOBBd6lUzN5jBhLNhv68Wv8UfUl')
-                .success(function(data){
-                    $rootScope.teams = data;
-                  $http.get('https://api.mongolab.com/api/1/databases/shed_database/collections/users/'+invitedby+'/?apiKey=Iwy7zOOBBd6lUzN5jBhLNhv68Wv8UfUl').success(function(data){
-
-                        admin = data;
-
-                       for(i = $rootScope.teams.length -1;i >= 0 ; i--){
-                          team = $rootScope.teams[i];
-                        if(admin.username == team.admin  ){
-                             teamId = team._id.$oid;
-                              currentTeam = team.name;
-                              /*
-                                $rootScope.user = $http.get('https://api.mongolab.com/api/1/databases/shed_database/collections/users/'+userid+'/?apiKey=Iwy7zOOBBd6lUzN5jBhLNhv68Wv8UfUl');
-                                $rootScope.user.teamid = team._id.$oid;
-                                $http.put('https://api.mongolab.com/api/1/databases/shed_database/collections/users/'+userid+'/?apiKey=Iwy7zOOBBd6lUzN5jBhLNhv68Wv8UfUl',$rootScope.user);
-                               */
-                              /*
-                              break;
-                        }
-                        
-
-                    }
-                  });
-
-                  
-   
-                });
-             	    	
-              }
-            }
-        
-        });
-                 
-                
-            },
-            logout:function () {
-             
-                currentUser = null;
-                authorized = false;
-                $location.path("/auth");
-            },
-            isLoggedIn:function () {
-                return authorized;
-            },
-            currentUser:function () {
-                return currentUser;
-            },
-            currentEmail:function(){
-            	 return email;
-            },
-            currentUsertype:function(){
-              return user_type;
-            },
-            currentInvitedby:function(){
-              return invitedby;
-            },
-            userId:function(){
-            	 return userid;
-            }
-
-            authorized:function () {
-                return authorized;
-            },
-            currentTeam:function(){
-                return currentTeam;
-            },
-            teamId:function(){
-                return teamId;
-            },
-            
-            isAuthenticated: function() {
-                
-              if (authorized) {
-                  return true;
-              }
-              else{
-                 return false;
-              }
-            }
-     
-
-
-        };
-    }
-);*/
 var compareTo = function() {
     return {
       require: "ngModel",

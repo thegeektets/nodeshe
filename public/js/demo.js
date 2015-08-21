@@ -1,4 +1,4 @@
-/*$(document).ready(function(){
+$(document).ready(function(){
     //Welcome Message (not for login page)
     function notify(message, type){
         $.growl({
@@ -25,6 +25,6 @@
     };
     
     if (!$('.login-content')[0]) {
-        notify('Welcome back Mallinda Hollaway', 'inverse');
+        notify('Welcome back {{auth.currentUser()}}', 'inverse');
     } 
-});*/
+});

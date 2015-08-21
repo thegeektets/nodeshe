@@ -11,10 +11,22 @@
  });
 
 
-function dashCtrl($scope, $location, Restangular,$rootScope,$http) {
+function dashCtrl($scope, $location, Restangular,$rootScope,$http,auth) {
+  $scope.isLoggedIn = auth.isLoggedIn();
+  $scope.currentUser = auth.currentUser();
+ 
+ auth.userProfile().then(function(data) {
+    $scope.userProfile = data;
+
+   
+});
+
+  $scope.logOut = auth.logOut();
+  $scope.bdclass = "";
+
 
 $scope.books = {};
-
+/*
    if($rootScope.authService.currentUsertype() == 'admin'){ 
                 
                 $http.get('https://api.mongolab.com/api/1/databases/shed_database/collections/teams/?apiKey=Iwy7zOOBBd6lUzN5jBhLNhv68Wv8UfUl',{cache:true})
@@ -62,7 +74,7 @@ $scope.books = {};
                 });
                     
               }
-
+*/
 $scope.getTotalcopies = function(){
     var total = 0;
     for(var i = 0; i < $scope.books.  length; i++){

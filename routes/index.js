@@ -3,23 +3,48 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var Post = mongoose.model('Post');
 var User = mongoose.model('User');
+var Team = mongoose.model('Team');
+var Book = mongoose.model('Book');
+
+
 var Comment = mongoose.model('Comment');
 var passport = require('passport');
 
-router.get('/posts',function(req, res, next){
-	Post.find(function(err, posts){
-		if(err){return next(err);}
-		res.json(posts);
-	});
+
+router.get('/librarybooks/:teamid',function(req,res){
+ Book.find({'teamid': req.params.teamid},function(err, posts){
+    if(err){return next(err);}
+    res.json(posts);
+  });
 });
 
-router.post('/posts', function(req, res, next) {
-  var post = new Post(req.body);
+router.post('/addbook', function(req, res, next) {
+  var book = new Book();
 
-  post.save(function(err, post){
+  book.title = req.body.title;
+  book.author = req.body.author;
+  book.publisher = req.body.publisher;
+  book.dateofpublication = req.body.dateofpublication;
+  book.image = req.body.image;
+  book.pic = req.body.pic;
+  book.description = req.body.description;
+  book.category = req.body.category;
+  book.librarytype = req.body.librarytype;
+  book.copies = req.body.copies;
+  book.transaction = req.body.copies;
+  book.teamid = req.body.teamid;
+  
+  book.save(function(err){
     if(err){ return next(err); }
 
-    res.json(post);
+       res.json(post);
+  });
+});
+
+router.get('/profiles/:user',function(req,res){
+ User.find({'_id': req.params.user},function(err, posts){
+    if(err){return next(err);}
+    res.json(posts);
   });
 });
 
@@ -32,6 +57,8 @@ router.post('/register', function(req, res, next){
 
   user.username = req.body.username;
   user.email = req.body.email;
+  user.team = req.body.team;
+  
   user.usertype = "admin";
 
   user.setPassword(req.body.password);
@@ -42,6 +69,31 @@ router.post('/register', function(req, res, next){
     return res.json({token: user.generateJWT()})
   });
 });
+router.get('/team/:name',function(req,res){
+ Team.findOne({'admin': req.params.name},function(err, posts){
+    if(err){return next(err);}
+    res.json(posts);
+  });
+});
+
+
+router.post('/team', function(req, res, next){
+  if(!req.body.username || !req.body.team){
+    return res.status(400).json({message: 'Please fill out all fields'});
+  }
+
+  var team = new Team();
+
+  team.admin = req.body.username;
+  team.name = req.body.team;
+
+  team.save(function (err){
+    if(err){ return next(err); }
+
+    return  res.json(post);
+  });
+});
+
 
 router.post('/login', function(req, res, next){
   if(!req.body.username || !req.body.password){

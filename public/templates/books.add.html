@@ -1,25 +1,151 @@
+<header id="header">
+            <ul class="header-inner">
+                <li id="menu-trigger" data-trigger="#sidebar">
+                    <div class="line-wrap">
+                        <div class="line top"></div>
+                        <div class="line center"></div>
+                        <div class="line bottom"></div>
+                    </div>
+                </li>
+            
+                <li class="logo hidden-xs">
+                    <a href="#/">SHED</a>
+                </li>
+                
+                <li class="pull-right">
+                <ul class="top-menu">
+                	<li id="toggle-width">
+                        <div class="toggle-switch">
+                            <input id="tw-switch" type="checkbox" hidden="hidden">
+                            <label for="tw-switch" class="ts-helper"></label>
+                        </div>
+                    </li>
+ 
+                    <li id="top-search">
+                        <a class="tm-search" href=""></a>
+                    </li>
+                   
+                    
+                   
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="tm-settings" href=""></a>
+                        <ul class="dropdown-menu dm-icon pull-right">
+                            <li>
+                                <a href="profile-about.html"><i class="md md-person"></i> View Profile</a>
+                            </li>
+            
+                            <li>
+                                <a href=""><i class="md md-settings"></i> Settings</a>
+                            </li>
+                            <li>
+                                <a href=""><i class="md md-history"></i> Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                      </ul>
+                </li>
+            </ul>
+            
+            <!-- Top Search Content -->
+            <div id="top-search-wrap">
+                <input type="text">
+                <i id="top-search-close">&times;</i>
+            </div>
+        </header>
+        
+        <section id="main">
+            <aside id="sidebar">
+                <div class="sidebar-inner c-overflow">
+                    <div class="profile-menu">
+                        <a href="">
+                            <div class="profile-pic">
+                                <img src="/img/profile-pics/1.jpg" alt="">
+                            </div>
 
-	<div class="container" fade-in>
+                            <div class="profile-info">
+                                {{currentUser}} : {{userProfile['0']['usertype']}}
 
-    <div style="padding-top: 2em;">
+                                <i class="md md-arrow-drop-down"></i>
+                            </div>
+                        </a>
 
-    
+                        <ul class="main-menu">
+                            <li>
+                                <a href="profile-about.html"><i class="md md-person"></i> View Profile</a>
+                            </li>
+                         
+                            <li>
+                                <a href=""><i class="md md-settings"></i> Settings</a>
+                            </li>
+                            <li>
+                                <a href=""><i class="md md-history"></i> Logout</a>
+                            </li>
+                        </ul>
+                    </div>
 
-            <div class="page-header">
-                <h1>Book</h1>
-             </div>
-     <div class="well">
-	<hr/>
-	<form name="myform"  novalidate class="container css-form"> 
+                    <ul class="main-menu">
+                        <li><a href="#/dashboard"><i class="md md-home"></i> Dashboard</a></li>
+                        <li><a href="#/"><i class="md md-my-library-books"></i> Books List</a></li>
+                        <li><a href="#/addbook"><i class="md md-content-copy"></i> Add Book</a></li>
+                        <li><a href="#/borrowed"><i class="md md-today"></i> Borrowed List</a></li>
+                        <li><a href="#/listusers"><i class="md md-person"></i> Library Users</a></li>
+                        <li><a href="#/invite"><i class="md md-person"></i> Invite Users</a></li>
+                        <li><a href=""><i class="md md-my-library-books"></i> Manage Library</a> </li>
+                       
+                       
+                        
+                    </ul>
+                </div>
+            </aside>
+	  <section id="content">
+                <div class="container">
+                    <div class="block-header">
+                        <h2>ADD BOOK</h2>
+                    
+                        <ul class="actions">
+                           
+                            <li class="dropdown">
+                                <a href="" data-toggle="dropdown">
+                                    <i class="md md-more-vert"></i>
+                                </a>
+                    
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li>
+                                        <a href="">Refresh</a>
+                                    </li>
+
+                                </ul>
+                            </li>
+                        </ul>
+                    
+                    </div>
+                
+                    <div class="card">
+                      
+                    
+                        <div class="card-body card-padding">
+					
+					<form name="myform"  novalidate class="css-form"> 
+						  <div ng-show="error" class="alert alert-danger row">
+            <span>{{ error.message }}</span>
+          </div>
 
 
-			<div class='container form-row'>
-					<div class="animated zoomInRight">
-				        <div class="input-group search-bar">
-				          <input type="text" ng-model="search" ng-change="change()" onclick="select()" class="form-control" placeholder="search book" autofocus />
-				          <span class="input-group-addon bar-style"><i class="glyphicon glyphicon-search"></i></span>
-				        </div>
-				    <div style="text-align:center;padding-top:10px"> 	{{$rootScope.addmanually}} {{$scope.book}}	</div>
+						<div class="animated zoomInRight">
+				        
+				           <div class="form-group">
+                                <div class="fg-line input-group search-bar">
+                                    <input type="text" 
+                                     type="text" ng-model="search" ng-change="change()" onclick="select()" 
+                                     class="form-control" placeholder="search book" autofocus />
+
+                                      <span class="input-group-addon bar-style"><i class="md md-search"></i></span>
+		
+                                    </div>
+                            </div>
+				         
+				    <div style="text-align:center;padding-top:10px"> 
+				    	{{$rootScope.addmanually}} {{$scope.book}}	</div>
 				    <div ng-if="!details" style="text-align:center;padding-top:10px">
 					  Loading results...
 					</div>
@@ -65,49 +191,61 @@
 
 				</div>
 
-			</div>
+				<div class="form-group" ng-hide='true'>
+                                <div class="fg-line input-group ">
+			     		<input class="form-control" type="text" name="pic" ng-model="book.pic" required ng-minlength= "2" />
+					</div>
+				</div>
 
-		<div >
-			<div class="container form-row">
-			        Book Title:&nbsp;&nbsp;&nbsp;
-					<input class="form-control"type="text" name="title" ng-model="book.title" placeholder="Book Title" required ng-minlength= "2" />
-			</div>
+				<div class="form-group">
+                                <div class="fg-line input-group ">
+			     		<input class="form-control" type="text" name="title" ng-model="book.title" placeholder="Book Title" required ng-minlength= "2" />
+					</div>
+				</div>
 
 
-										
-			<div class="container form-row">
-			        Book Author:&nbsp;&nbsp;&nbsp;
+			<div class="form-group">
+                                <div class="fg-line input-group ">
 					<input class="form-control" name="author" ng-model="book.author" placeholder="Book Author" ng-required= "true" ng-minlength= "2" />
-			</div> 
+				</div> 
+			</div>
 			   
-			<div class="container form-row">
-			        Book Publisher:&nbsp;&nbsp;&nbsp;
+			<div class="form-group">
+                    <div class="fg-line input-group ">
 					<input class="form-control"  type="text" name="publisher" ng-model="book.publisher" placeholder="Book Publisher" ng-required= "true" ng-minlength= "2" />
 			</div>
+			</div>
 										 
-			<div class="container form-row">
-			        Date of Publication:&nbsp;&nbsp;&nbsp;
+			<div class="form-group">
+                                <div class="fg-line input-group">
 					<input class="form-control" type="date" name="dateofpublication" ng-model="book.dateofpublication" placeholder="Date of Publication" ng-required= "true" ng-minlength= "2"  data-provide="datepicker"/>
-			</div> 
-			<div class="container form-row" >
-					 Book Image:&nbsp;&nbsp;&nbsp;
-				<div ng-controller="FileUploadCtrl"/>
-			   <input type="file" id="fileToUpload"  onchange="angular.element(this).scope().setFiles(this)" ng-model='book.image' /> 
-			   <input type='button' class="btn-success" ng-click="uploadFile()" value="Upload" />
-						   			  
-       			 </div>
+			</div>
+			</div>
+			<div class="form-group">
+                  
+              		<span ng-controller="FileUploadCtrl"/>
+			   
+			   <input type="file" id="fileToUpload"  onchange="angular.element(this).scope().setFiles(this)" 
+			   ng-model='book.image' /> 
+			   <input type='button' class="btn btn-primary " ng-click="uploadFile()" value="Upload" style="float:right" />
+					</span>	   			  
        	    </div>
+      
 
-			<div class="container form-row">
-			        Description:&nbsp;&nbsp;&nbsp;
-					<textarea class="form-control" type="text" name="description" ng-model="book.description" ng-required= "true" ng-minlength= "2"></textarea>
+			<div class="form-group">
+               
+               <div class="fg-line">
+					<textarea class="form-control" type="text" 
+					name="description" ng-model="book.description" ng-required= "true" ng-minlength= "2" placeholder="Description...."></textarea>
+				</div>
+			</div>											
+			
+			<div class="form-group">
+                                <div class="fg-line input-group">
+                                <input class="form-control" type="text" name="category" ng-model="book.category" placeholder="Category" ng-required= "true" ng-minlength= "2" />
 			</div>
-											
-			<div class="container form-row">
-			       Category:&nbsp;&nbsp;&nbsp;
-			<input class="form-control" type="text" name="category" ng-model="book.category" placeholder="Category" ng-required= "true" ng-minlength= "2" />
 			</div>
-										
+					
 			<!--   
 			
 			<div class="container form-row">
@@ -121,22 +259,32 @@
 					<input class="form-control"  type="text" name="book.tags" ng-model="tags" placeholder="Tags" ng-required= "true" ng-minlength= "2" />
 			</div>
 			-->
-			   
-			<div class="container form-row">
-			        Library Type:&nbsp;&nbsp;&nbsp;
-					<select class="form-control"name="librarytype" ng-model="book.librarytype" ng-options="
-
-
-					librarytype as librarytype.desc for librarytype in librarytypes" ng-required= "true" ng-minlength= "2"> 
-			        <option value="">Please select an option</option>
-			</select>
+		    <div class="form-group">
+                                <div class="fg-line input-group">
+                                <input class="form-control" type="text" name="teamid" ng-model="book.teamid" placeholder="Team Id" ng-required= "true" ng-minlength= "2" />
+			</div>
+			</div>  
+			
+			<div class="form-group">
+                  <div class="fg-line">
+                  	<div class="select">
+					
+					<select placeholder="Library Type" class="form-control"name="librarytype" ng-model="book.librarytype" ng-required= "true" ng-minlength= "2"> 
+					<option value="">Select an Option</option>
+			        <option value="Personal Library">Personal Library</option>
+			         <option value="Team Library">Team Library</option>
+					</select>
+					</div>
 			</div>
 		</div>
-		   <div class="container form-row" ng-if='details'>
-			        Number of Copies:&nbsp;&nbsp;&nbsp;
+		   <div class="form-group">
+                                <div class="fg-line input-group search-bar">
   				<input class="form-control" type="text" name="copies" ng-model="book.copies" placeholder="Copies" ng-required= "true" ng-minlength= "2" />
+		</div>
 		</div>	
-			<div class="container input-group form-row " style="padding:5px">
+
+								
+			<div class="form-group" style="padding:5px">
 					<input type= "button" ng-click="manual()" ng-if='details.totalItems < 1' value="Add Manually" class="btn btn-success" style="margin:2px"> </input>
 					
 					<input ng-if='details' type= "button" ng-click="save()" ng-disabled="isClean() || $form.invalid"  value="Save Book" class="btn btn-success" style="margin:2px"> </input>

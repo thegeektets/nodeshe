@@ -10,6 +10,8 @@
   
     
     <!-- Vendor CSS -->
+        <link href="/vendors/bower_components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
+      
         <link href="/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
         <link href="/vendors/bower_components/sweetalert/dist/sweetalert-override.min.css" rel="stylesheet">
         <link href="/vendors/bower_components/material-design-iconic-font/css/material-design-iconic-font.min.css" rel="stylesheet">
@@ -19,12 +21,13 @@
         <!-- CSS -->
         <link href="/css/app.min.1.css" rel="stylesheet">
         <link href="/css/app.min.2.css" rel="stylesheet">
-    </head>
 
 </head>
 
-<body ng-view class="{{bdclass}}">
-  
+
+
+<body id="app">
+  <div ng-view></div>
 
 
 
@@ -79,16 +82,51 @@
             </div>   
         <![endif]-->
 
+<!-- Javascript Libraries -->
+        <script src="/vendors/bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        
+        <script src="/vendors/bower_components/flot/jquery.flot.js"></script>
+        <script src="/vendors/bower_components/flot/jquery.flot.resize.js"></script>
+        <script src="/vendors/bower_components/flot.curvedlines/curvedLines.js"></script>
+        <script src="/vendors/sparklines/jquery.sparkline.min.js"></script>
+        <script src="/vendors/bower_components/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"></script>
 
-  <script src="/javascripts/lib/angular/angular.js"></script>
-  <script src="/javascripts/js/angular-file-upload.js"></script> 
-  <script src="/javascripts/lib/angular/angular-route.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
-  <script type="text/javascript" src="/javascripts/restangular.js"></script>
-  <script src="/javascripts/angularapp.js"></script>
+        <script src="/vendors/bower_components/moment/min/moment.min.js"></script>
+        <script src="/vendors/bower_components/fullcalendar/dist/fullcalendar.min.js "></script>
+        <script src="/vendors/bower_components/simpleWeather/jquery.simpleWeather.min.js"></script>
+        <script src="/vendors/bower_components/jquery.nicescroll/jquery.nicescroll.min.js"></script>
+        <script src="/vendors/bower_components/Waves/dist/waves.min.js"></script>
+        <script src="/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
+        <script src="/vendors/bower_components/sweetalert/dist/sweetalert.min.js"></script>
+
+      
+        
+        <!-- Placeholder for IE9 -->
+        <!--[if IE 9 ]>
+            <script src="/vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
+        <![endif]-->
+        
+        <script src="/js/flot-charts/curved-line-chart.js"></script>
+        <script src="/js/flot-charts/line-chart.js"></script>
+        <script src="/js/charts.js"></script>
+        
+        <script src="/js/charts.js"></script>
+        <script src="/js/functions.js"></script>
+        <script src="/js/demo.js"></script>
+
 
 
 <!-- the controllers -->
+
+<script src="/javascripts/lib/angular/angular.js"></script>
+<script src="/javascripts/js/angular-file-upload.js"></script> 
+<script src="/javascripts/lib/angular/angular-route.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+<script type="text/javascript" src="/javascripts/restangular.js"></script>
+<script src="/javascripts/angularapp.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/auth0/angular-jwt/master/dist/angular-jwt.js"></script>
+
 <script src="/javascripts/controllers/dashboardController.js"></script>
 
 <script src="/javascripts/controllers/editController.js"></script>
@@ -101,29 +139,12 @@
 <script src="/javascripts/controllers/inviteController.js"></script>
 <script src="/javascripts/controllers/listbookController.js"></script>
 <script src="/javascripts/controllers/listController.js"></script>
-<script src="/javascripts/controllers/regController.js"></script>
 <script src="/javascripts/controllers/regnewController.js"></script>
 <script src="/javascripts/js/notificationManager.js"></script>
 <script src="/javascripts/js/angular-filter.min.js"></script>
+<script type="text/javascript" src="/angular-jwt/dist/angular-jwt.js"></script>
+ 
 
-
-<!-- Javascript Libraries -->
-        <script src="/vendors/bower_components/jquery/dist/jquery.min.js"></script>
-        <script src="/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-        
-        <script src="/vendors/bower_components/jquery.nicescroll/jquery.nicescroll.min.js"></script>
-        <script src="/vendors/bower_components/Waves/dist/waves.min.js"></script>
-        <script src="/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
-        <script src="/vendors/bower_components/sweetalert/dist/sweetalert.min.js"></script>
-       
-        
-        <!-- Placeholder for IE9 -->
-        <!--[if IE 9 ]>
-            <script src="/vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
-        <![endif]-->
-        
-        <script src="/js/functions.js"></script>
-        <script src="/js/demo.js"></script>
 </body>
 
 </html>
