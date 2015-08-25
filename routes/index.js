@@ -5,12 +5,70 @@ var Post = mongoose.model('Post');
 var User = mongoose.model('User');
 var Team = mongoose.model('Team');
 var Book = mongoose.model('Book');
+var Review = mongoose.model('Review');
+var Borrowed = mongoose.model('Borrowed');
 
 
 var Comment = mongoose.model('Comment');
 var passport = require('passport');
 
+router.post('/borrowbook', function(req, res, next) {
+  var borrowed = new Borrowed();
+ 
+  borrowed.borrowdate = req.body.borrowdate;
+  borrowed.bookid  = req.body.bookid;
+  borrowed.userid = req.body.userid;
+  borrowed.bookname = req.body.bookname;
+  borrowed.username = req.body.username;
+  borrowed.teamid = req.body.teamid;
+  borrowed.usermail = req.body.usermail;
+ 
+  
+  borrowed.save(function(err){
+    if(err){ return next(err); }
 
+       res.json(post);
+  });
+});
+
+router.post('/reviewbook', function(req, res, next) {
+  var review = new Review();
+ console.log(req.body);
+  review.user = req.body.user;
+  review.bookid = req.body.bookid;
+  review.comment = req.body.comment;
+ 
+  
+  review.save(function(err){
+    if(err){ return next(err); }
+
+       res.json(post);
+  });
+});
+router.get('/reviews/:bookid',function(req,res){
+ Review.find({'bookid': req.params.bookid},function(err, posts){
+    if(err){return next(err);}
+    res.json(posts);
+  });
+});
+
+
+router.put('/updatetransaction/:bookid', function(req, res, next) {
+     var book = new Book();
+
+     book.transaction = req.body.transaction;
+     
+    
+    Book.update({_id:req.params.bookid}, req.body, {},function (err, post) {
+      if (err) return next(err);
+        res.json(post);
+     });
+
+});
+
+
+
+ 
 router.get('/librarybooks/:teamid',function(req,res){
  Book.find({'teamid': req.params.teamid},function(err, posts){
     if(err){return next(err);}
@@ -18,6 +76,12 @@ router.get('/librarybooks/:teamid',function(req,res){
   });
 });
 
+router.get('/book/:bookid',function(req,res){
+ Book.findOne({'_id': req.params.bookid},function(err, posts){
+    if(err){return next(err);}
+    res.json(posts);
+  });
+});
 router.post('/addbook', function(req, res, next) {
   var book = new Book();
 
@@ -31,7 +95,7 @@ router.post('/addbook', function(req, res, next) {
   book.category = req.body.category;
   book.librarytype = req.body.librarytype;
   book.copies = req.body.copies;
-  book.transaction = req.body.copies;
+  book.transaction = parseInt(req.body.copies);
   book.teamid = req.body.teamid;
   
   book.save(function(err){

@@ -1,66 +1,79 @@
-function ViewBookCtrl($rootScope,$scope, $location, Restangular, book,$http){
+function ViewBookCtrl($rootScope,$scope, $location, Restangular,$route, $http,auth){
   
-  $scope.relatedbooks = Restangular.all("books").getList().$object;
-       $scope.borrowed = {};
+  $scope.isLoggedIn = auth.isLoggedIn();
+  $scope.currentUser = auth.currentUser();
+ 
+ auth.userProfile().then(function(data) {
+    $scope.userProfile = data;
+
+   
+});
+
+  $scope.logOut = auth.logOut();
+  $scope.bdclass = "";
+
+  $scope.borrowed = {};
   
 
-
-	var original = book;
- 	$scope.book = Restangular.copy(original);
-  var transaction = $scope.book.transaction;
-
-    $scope.teamreferences= [{
-           id: 'Branding',
-           desc: 'Branding'
-              }, {
-           id: 'Digital',
-           desc: 'Digital'
-          }];
+    auth.teamId().then(function(data) {
     
-  
+    $scope.teamId = data._id;
 
-    $scope.librarytypes= [{
-      id: 'TeamLibrary',
-      desc: 'Team Library'
-      }, {
-      id: 'PersonalLibrary',
-      desc: 'Personal Library'
-      }];
-    $scope.reviews = Restangular.all("reviews").getList().$object;
-     $scope.review ={};
-	$scope.isClean = function () {
-		return angular.equals(original, $scope.book);
-	}
+     $http.get('/librarybooks/'+$scope.teamId).success(function(data){
+
+       $scope.relatedbooks = data;
+
+
+      });
+
+    });  
+    var transaction;
+
+    $http.get('/book/'+$route.current.params.bookId).success(function(data){
+
+       $scope.book = data;
+       transaction = $scope.book.transaction;
+
+
+      });
+
+    $http.get('/reviews/'+$route.current.params.bookId).success(function(data){
+
+     $scope.reviews = data;
+         
+
+      });
+      $scope.review ={};
+
 
 	$scope.borrow = function(user,email){
 
      $scope.borrowed.borrowdate = new Date();
-     $scope.borrowed.bookid  = book._id.$oid;
-     $scope.borrowed.userid = $rootScope.authService.userId();
+     $scope.borrowed.bookid  = $route.current.params.bookId;
+     $scope.borrowed.userid = $scope.userProfile['_id'];
      $scope.borrowed.bookname = $scope.book.title;
      $scope.borrowed.username = user;
      $scope.borrowed.teamid = $scope.book.teamid;
      $scope.borrowed.usermail = email;
 
-     $scope.book.borrowedby = user;
-     $scope.book.borrowedbyemail = email;
-     $scope.book.status = 'borrowed';
-     $scope.book.transaction = (transaction - 1 );
+     transaction = transaction - 1;
+     $scope.book.transaction = transaction ;
 
-     //$scope.book.push('borrowedby : '+user);
-     console.log('borrowedby :' + 	email);
-		 console.log('borrow :' +  $scope.borrowed);
-   
-    $scope.book.put().then(function () {
+    
+    
+      $http.post('/borrowbook', $scope.borrowed).error(function(error){
+      $scope.error = error;
+      });
 
-       Restangular.all('borrowed').post($scope.borrowed).then(function () {
-           
-            $location.path('/viewbook/'+book._id.$oid);
+      $http.put('/updatetransaction/'+$route.current.params.bookId ,$scope.book ).error(function(error){
+      $scope.error = error;
+      });
 
-        });
-		
-		});
-	
+
+      
+      //$route.reload();
+
+
 	};
 
 	$scope.return = function(){
@@ -114,18 +127,16 @@ function ViewBookCtrl($rootScope,$scope, $location, Restangular, book,$http){
 	};
 
 	$scope.reviewbook= function(user){
-     $scope.review.bookid = book._id.$oid;
+     $scope.review.bookid = $route.current.params.bookId;
      $scope.review.user = user;
-     //$scope.review.comment = $rootScope.review.comment; 
-       console.log($scope.review.comment);
-       
-      console.log(user);
-      console.log(book._id.$oid);
+     $scope.book.transaction = $scope.book.copies;
 
-      Restangular.all('reviews').post($scope.review).then(function (  ) {
-     // $scope.reviews.splice($scope.review.user, $scope.review.comment);
-   		$location.path('/viewbook/'+book._id.$oid);
-		});
+      $http.post('/reviewbook', $scope.review).error(function(error){
+        $scope.error = error;
+      });
+      
+      $route.reload();
+
 	
 	};
 }

@@ -48,25 +48,12 @@ var shed = angular.module('shed', ['restangular', 'ngRoute','angular.filter','an
 			}).
 			when('/author/:book.author', {
 				controller: AthrBookCtrl,
-				templateUrl: 'templates/book.view.html',
-         resolve: {
-					book: function (Restangular, $route) {
-						return Restangular.one('books', $route.current.params.author).get();
-					}
-
-
-				}
+				templateUrl: 'templates/book.view.html'
+        
 			}).
 			when('/viewbook/:bookId', {
 				controller: ViewBookCtrl,
-				templateUrl: 'templates/book.view.html',
-       
-				resolve: {
-					book: function (Restangular, $route) {
-						return Restangular.one('books', $route.current.params.bookId).get();
-					}
-
-				}
+				templateUrl: 'templates/book.view.html'
 			}).
 				when('/listusers', {
 				controller: ListCtrl,
