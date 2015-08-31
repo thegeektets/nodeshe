@@ -317,6 +317,16 @@ shed.factory('auth' , ['$http','$window','jwtHelper','$q',function($http , $wind
       }
     };
 
+    auth.currentId = function(){
+              if(auth.isLoggedIn()){
+        var token = auth.getToken();
+        var payload =jwtHelper.decodeToken(token);
+
+        return payload._id;
+      }
+    };
+
+
      auth.register = function(user){
         return $http.post('/register', user).success(function(data){
           auth.saveToken(data.token);

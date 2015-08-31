@@ -46,9 +46,10 @@
                 </li>
             </ul>
             
+              
             <!-- Top Search Content -->
             <div id="top-search-wrap">
-                <input type="text">
+                <input type="text" ng-model="search">
                 <i id="top-search-close">&times;</i>
             </div>
         </header>
@@ -155,8 +156,8 @@
 	    </div>
 	    
 	    <div class="row" style="padding:20px">
-	    <a href="#/viewbook/{{relatedbook._id.$oid}}" ng-repeat="relatedbook in relatedbooks | orderBy:ordertype | filter :book.category " ng-show="relatedbook._id.$oid">
-	    		<span ng-if = 'relatedbook._id.$oid != book._id.$oid'>
+	    <a href="#/viewbook/{{relatedbook._id}}" ng-repeat="relatedbook in relatedbooks | orderBy:ordertype | filter :book.category " ng-show="relatedbook._id">
+	    		<span ng-if = 'relatedbook._id != book._id'>
       		  <img ng-if='relatedbook.image' ng-src='img/{{relatedbook.image.replace("C:\\fakepath\\", "")}}' alt="image" width='15%' style='float:left'/>
       		  <img ng-if='relatedbook.pic' ng-src='{{relatedbook.pic}}' alt="image" width='15%' style='float:left'/>
       		
@@ -182,9 +183,15 @@
 				</div>
                 </div>
                 	
-                <div ng-if="book.borrowedby == currentUser">
-                	 <button class='btn btn-success' ng-click='return()'> Return  Book </button> 
-                </div>
+                    <div ng-if="myborrowed != null">
+                    	 <button class='btn btn-success' ng-click='return()'> Return  Book </button> 
+                    </div>
+
+                    <div ng-if="myborrowed == null" style="margin-top:-10px;margin-left:10px">
+                    <button class='btn btn-success' ng-click='borrow(currenctUser, currentEmail)'>
+                        Borrow  Book
+                    </button>
+                    </div>
                   	      <div class="page-header">
                				 <h3>Review Book</h3>
              			  </div>
@@ -193,25 +200,25 @@
 								
 									<div class="panel panel-default">
 									 <div class="form-group">
-									 			 Username:&nbsp;&nbsp;&nbsp;
-			       					 {{currentUser}}
+                                     <span style="padding:10px">
+                                        Username:&nbsp;&nbsp;&nbsp;
+                                     {{currentUser}} 
+                                     </span>
+									 			 
                
-						               <div class="fg-line">
+						               <div class="fg-line" style="padding:10px">
 											<textarea class="form-control" type="text" 
 											name="description" ng-model="review.comment" ng-required= "true" ng-minlength= "2" placeholder="Review....">
 											</textarea>
 										</div>
+                                        <button  style="float:left;" class="btn btn-success" ng-click="reviewbook(currentUser)"> Review Book</button>
+                
 									</div>
+
 									</div>
-								<button  style="float:left" class="btn btn-success" ng-click="reviewbook(currentUser)"> Review Book</button>
-							</form>
+										</form>
 					  </div>
 
-                    <div ng-if="book.transaction > 0 && book.borrowedby != currentUser" style="margin-top:-10px;margin-left:10px">
-                	<button class='btn btn-success' ng-click='borrow(currentUser, currentEmail)'>
-                		Borrow  Book
-                	</button>
-					</div>
          </div>  		
 		 </li>
 		 </ul>

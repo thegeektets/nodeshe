@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var BorrowedSchema = new mongoose.Schema({
 
      borrowdate: String,
+     returndate: String,
      bookid: String,
      userid: String,
      bookname: String,

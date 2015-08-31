@@ -1,7 +1,18 @@
 
 
-function InvCtrl($scope, $location, Restangular,$rootScope,$http) {
+function InvCtrl($scope, $location, Restangular,$rootScope,$http,auth) {
 
+
+$scope.isLoggedIn = auth.isLoggedIn();
+$scope.currentUser = auth.currentUser();
+$scope.logOut = auth.logOut();
+$scope.bdclass = "";
+$scope.borrowed = {};
+
+auth.userType().then(function(data) {
+$scope.userType = data['0']['usertype'];
+
+});  
   
        $scope.invite = function() {
         $scope.user = {};

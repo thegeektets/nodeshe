@@ -1,7 +1,25 @@
 
-function BrwCtrl($scope, $location, Restangular,$rootScope,$http) {
+function BrwCtrl($scope, $location,$rootScope,$http,auth) {
 
-$scope.books = Restangular.all("borrowed").getList().$object;
+$scope.users =[];
+$scope.isLoggedIn = auth.isLoggedIn();
+$scope.currentUser = auth.currentUser();
+$scope.logOut = auth.logOut();
+$scope.bdclass = "";
+$scope.borrowed = {};
+
+auth.userType().then(function(data) {
+$scope.userType = data['0']['usertype'];
+
+});  
+  
+    $http.get('/borrowedlist').success(function(data){
+
+       $scope.books = data;
+       
+
+
+      });
 
 
 

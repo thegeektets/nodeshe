@@ -1,15 +1,132 @@
+<header id="header">
+            <ul class="header-inner">
+                <li id="menu-trigger" data-trigger="#sidebar">
+                    <div class="line-wrap">
+                        <div class="line top"></div>
+                        <div class="line center"></div>
+                        <div class="line bottom"></div>
+                    </div>
+                </li>
+            
+                <li class="logo hidden-xs">
+                    <a href="#/">SHED</a>
+                </li>
+                
+                <li class="pull-right">
+                <ul class="top-menu">
+                    <li id="toggle-width">
+                        <div class="toggle-switch">
+                            <input id="tw-switch" type="checkbox" hidden="hidden">
+                            <label for="tw-switch" class="ts-helper"></label>
+                        </div>
+                    </li>
+ 
+                    <li id="top-search">
+                        <a class="tm-search" href=""></a>
+                    </li>
+                   
+                    
+                   
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="tm-settings" href=""></a>
+                        <ul class="dropdown-menu dm-icon pull-right">
+                            <li>
+                                <a href="profile-about.html"><i class="md md-person"></i> View Profile</a>
+                            </li>
+            
+                            <li>
+                                <a href=""><i class="md md-settings"></i> Settings</a>
+                            </li>
+                            <li>
+                                <a href=""><i class="md md-history"></i> Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                      </ul>
+                </li>
+            </ul>
+            
+              
+            <!-- Top Search Content -->
+            <div id="top-search-wrap">
+                <input type="text" ng-model="search">
+                <i id="top-search-close">&times;</i>
+            </div>
+        </header>
+        
+        <section id="main">
+            <aside id="sidebar">
+                <div class="sidebar-inner c-overflow">
+                    <div class="profile-menu">
+                        <a href="">
+                            <div class="profile-pic">
+                                <img src="/img/profile-pics/1.jpg" alt="">
+                            </div>
 
-	<div class="container" fade-in>
+                            <div class="profile-info">
+                                {{currentUser}} : {{userProfile['0']['usertype']}}
 
-    <div style="padding-top: 2em;">
+                                <i class="md md-arrow-drop-down"></i>
+                            </div>
+                        </a>
 
-    
+                        <ul class="main-menu">
+                            <li>
+                                <a href="profile-about.html"><i class="md md-person"></i> View Profile</a>
+                            </li>
+                         
+                            <li>
+                                <a href=""><i class="md md-settings"></i> Settings</a>
+                            </li>
+                            <li>
+                                <a href=""><i class="md md-history"></i> Logout</a>
+                            </li>
+                        </ul>
+                    </div>
 
-            <div class="page-header">
-                <h1>Invite User</h1>
-             </div>
-             <div class="well">
-	<hr/>
+                    <ul class="main-menu">
+                        <li><a href="#/dashboard"><i class="md md-home"></i> Dashboard</a></li>
+                        <li><a href="#/"><i class="md md-my-library-books"></i> Books List</a></li>
+                        <li><a href="#/addbook"><i class="md md-content-copy"></i> Add Book</a></li>
+                        <li><a href="#/borrowed"><i class="md md-today"></i> Borrowed List</a></li>
+                        <li><a href="#/listusers"><i class="md md-person"></i> Library Users</a></li>
+                        <li><a href="#/invite"><i class="md md-person"></i> Invite Users</a></li>
+                        <li><a href=""><i class="md md-my-library-books"></i> Manage Library</a> </li>
+                       
+                       
+                        
+                    </ul>
+                </div>
+            </aside>
+            
+            
+            <section id="content">
+                <div class="container">
+                    <div class="block-header">
+                        <h2>INVITE  USER</h2>
+                    
+                        <ul class="actions">
+                           
+                            <li class="dropdown">
+                                <a href="" data-toggle="dropdown">
+                                    <i class="md md-more-vert"></i>
+                                </a>
+                    
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li>
+                                        <a href="">Refresh</a>
+                                    </li>
+
+                                </ul>
+                            </li>
+                        </ul>
+                    
+                    </div>
+                
+                    <div class="card">
+           
+                    
+                        <div class="card-body card-padding">
 	<form name="myForm" class="form-horizontal">
 
 	  <div class="animated zoomInRight">

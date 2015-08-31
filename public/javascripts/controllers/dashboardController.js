@@ -12,94 +12,81 @@
 
 
 function dashCtrl($scope, $location, Restangular,$rootScope,$http,auth) {
+
+
   $scope.isLoggedIn = auth.isLoggedIn();
   $scope.currentUser = auth.currentUser();
+   
+ auth.userProfile().then(function(data) {
+    $scope.userProfile = data;
+    });
+
+  
+  $scope.logOut = auth.logOut();
+  $scope.bdclass = "";
+   
  
  auth.userProfile().then(function(data) {
     $scope.userProfile = data;
-
    
-});
+  });
+  
+ auth.userType().then(function(data) {
+    $scope.userType = data;
+  });
 
-  $scope.logOut = auth.logOut();
-  $scope.bdclass = "";
+ auth.teamId().then(function(data) {
+    
+    $scope.teamId = data._id;
 
+     $http.get('/librarybooks/'+$scope.teamId).success(function(data){
 
-$scope.books = {};
-/*
-   if($rootScope.authService.currentUsertype() == 'admin'){ 
-                
-                $http.get('https://api.mongolab.com/api/1/databases/shed_database/collections/teams/?apiKey=Iwy7zOOBBd6lUzN5jBhLNhv68Wv8UfUl',{cache:true})
-                .success(function(data){
-                    $rootScope.teams = data;
-                    for(i = $rootScope.teams.length -1;i >= 0 ; i--){
-                         team = $rootScope.teams[i];
-                        if($rootScope.authService.currentUser() == team.admin  ){
-                           
-                           $http.get('https://api.mongolab.com/api/1/databases/shed_database/collections/books/?apiKey=Iwy7zOOBBd6lUzN5jBhLNhv68Wv8UfUl&q={"teamid":"'+team._id.$oid+'"}',{cache:true}).success(function(data){
-                              $scope.books = data;
-                               console.log($scope.books);
-                           });   
-                               
-                               break; 
+       $scope.books = data;
 
-                        }
-                        
+      $scope.getTotalBooks = function(){
 
-                    }
-                });
-              }else{
-                 $http.get('https://api.mongolab.com/api/1/databases/shed_database/collections/teams/?apiKey=Iwy7zOOBBd6lUzN5jBhLNhv68Wv8UfUl',{cache:true})
-                .success(function(data){
-                    $rootScope.teams = data;
-                       $http.get('https://api.mongolab.com/api/1/databases/shed_database/collections/users/'+$rootScope.authService.currentInvitedby()+'/?apiKey=Iwy7zOOBBd6lUzN5jBhLNhv68Wv8UfUl',{cache:true}).success(function(data){
-                            admin = data;
-                               for(i = $rootScope.teams.length -1;i >= 0 ; i--){
-                          team = $rootScope.teams[i];
-                        if(admin.username == team.admin  ){
-                                   
-                           $http.get('https://api.mongolab.com/api/1/databases/shed_database/collections/books/?apiKey=Iwy7zOOBBd6lUzN5jBhLNhv68Wv8UfUl&q={"teamid":"'+team._id.$oid+'"}',{cache:true}).success(function(data){
-                              $scope.books = data;
-                               console.log($scope.books);
-                           });   
-                                           
-                              break;
-                        }
-                        
+          return $scope.books.length;
 
-                    }
-                       });
-                  
-                 
-                });
-                    
+      }
+
+      $scope.getTotalCopies = function(){
+          var total = 0;
+          for(var i = 0; i < $scope.books.  length; i++){
+              var book = $scope.books[i];
+              if(book.copies != null ){
+              total = (parseInt(book.copies ) + total);
+            }
+          }
+          return total;
+      }
+
+        $scope.getTotalBorrowed = function(){
+            var copies  = 0;
+          for(var i = 0; i < $scope.books.  length; i++){
+              var book = $scope.books[i];
+              if(book.copies != null ){
+              copies = (parseInt(book.copies ) + copies);
+            }
+          }
+            var total = 0;
+            for(var i = 0; i < $scope.books.length; i++){
+                var book = $scope.books[i];
+                if(book.transaction != null ){
+                total = (parseInt(book.transaction ) + total);
+
               }
-*/
-$scope.getTotalcopies = function(){
-    var total = 0;
-    for(var i = 0; i < $scope.books.  length; i++){
-        var book = $scope.books[i];
-        if(book.copies != null ){
-        total = (parseInt(book.copies ) + total);
-      }
-    }
-    return total;
-}
+            }
+            total =  copies - total;
 
-$scope.getTotalborrowed = function(){
-    var copies  = $scope.getTotalcopies() ;
-    var total = 0;
-    for(var i = 0; i < $scope.books.  length; i++){
-        var book = $scope.books[i];
-        if(book.transaction != null ){
-        total = (parseInt(book.transaction ) + total);
+            return total;
+        }
+      
 
-      }
-    }
-    total =  copies - total;
+      });
 
-    return total;
-}
+    });
+
+
 
 
 }

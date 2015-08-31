@@ -31,6 +31,38 @@ router.post('/borrowbook', function(req, res, next) {
   });
 });
 
+router.get('/borrowedlist',function(req,res){
+
+ Borrowed.find(function(err, posts){
+    if(err){return next(err);}
+    res.json(posts);
+  });
+
+});
+
+router.get('/myborrowedlist/:userid',function(req,res){
+
+ Borrowed.find({'userid':req.params.userid},function(err, posts){
+    if(err){return next(err);}
+    res.json(posts);
+  });
+
+});
+
+router.put('/updateborrowed/:bookid/:userid', function(req, res, next) {
+     var borrowed = new Borrowed();
+
+     borrowed.returndate = req.body.returndate;
+     
+    
+    Borrowed.update({bookid:req.params.bookid,userid:req.params.userid}, req.body, {},function (err, post) {
+      if (err) return next(err);
+        res.json(post);
+     });
+
+});
+
+
 router.post('/reviewbook', function(req, res, next) {
   var review = new Review();
  console.log(req.body);
@@ -68,6 +100,8 @@ router.put('/updatetransaction/:bookid', function(req, res, next) {
 
 
 
+
+
  
 router.get('/librarybooks/:teamid',function(req,res){
  Book.find({'teamid': req.params.teamid},function(err, posts){
@@ -102,6 +136,13 @@ router.post('/addbook', function(req, res, next) {
     if(err){ return next(err); }
 
        res.json(post);
+  });
+});
+
+router.get('/people/:invited',function(req,res){
+ User.find({'invitedby': req.params.invited},function(err, posts){
+    if(err){return next(err);}
+    res.json(posts);
   });
 });
 
