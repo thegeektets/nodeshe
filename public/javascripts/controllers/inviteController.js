@@ -1,11 +1,21 @@
 
 
-function InvCtrl($scope, $location, Restangular,$rootScope,$http,auth) {
+function InvCtrl($scope, $location,$rootScope,$http,auth) {
 
 
 $scope.isLoggedIn = auth.isLoggedIn();
 $scope.currentUser = auth.currentUser();
-$scope.logOut = auth.logOut();
+$scope.logOut = function(){
+
+  console.log('getting there');
+
+  auth.logOut();
+
+  $location.path('/start');
+
+
+
+}
 $scope.bdclass = "";
 $scope.borrowed = {};
 

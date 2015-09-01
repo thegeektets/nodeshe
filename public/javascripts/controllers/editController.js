@@ -1,6 +1,6 @@
 
 
-function EditCtrl($scope, $location, Restangular, user) {
+function EditCtrl($scope, $location, user) {
 	
 	var original = user;
 	$scope.user = Restangular.copy(original);

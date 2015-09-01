@@ -1,4 +1,4 @@
-function EditBookCtrl($scope, $location, Restangular, book){
+function EditBookCtrl($scope, $location, book){
     
     
 

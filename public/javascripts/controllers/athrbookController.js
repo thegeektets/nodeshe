@@ -1,6 +1,6 @@
 
 
-function AthrBookCtrl($scope, $location, Restangular, book){
+function AthrBookCtrl($scope, $location, book){
 
 	var original = book;
 	$scope.book = Restangular.copy(original);

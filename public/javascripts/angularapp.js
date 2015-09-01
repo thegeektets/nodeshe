@@ -1,6 +1,6 @@
 
-var shed = angular.module('shed', ['restangular', 'ngRoute','angular.filter','angularFileUpload','angular-jwt']).
-	config(function ($routeProvider, RestangularProvider) {
+var shed = angular.module('shed', ['ngRoute','angular.filter','angularFileUpload','angular-jwt']).
+	config(function ($routeProvider) {
 		    $routeProvider
         .when('/start',{
             templateUrl:'templates/login.html',
@@ -19,7 +19,7 @@ var shed = angular.module('shed', ['restangular', 'ngRoute','angular.filter','an
         controller: dashCtrl,
         templateUrl: 'templates/users.dashboard.html'
         
-      }).
+        }).
          when('/borrowed', {
          controller:BrwCtrl,
          templateUrl: 'templates/books.borrowed.html'
@@ -60,6 +60,14 @@ var shed = angular.module('shed', ['restangular', 'ngRoute','angular.filter','an
 				templateUrl: 'templates/users.list.html'
 
 			}).
+      when('/profile/:userId', {
+        controller: ProfileCtrl,
+        templateUrl: 'templates/users.profile.html',
+      }).
+      when('/editprofile/:userId', {
+        controller: EditProfileCtrl,
+        templateUrl: 'templates/users.editprofile.html',
+      }).
 			when('/edit/:userId', {
 				controller: EditCtrl,
 				templateUrl: 'templates/users.detail.html',
@@ -91,20 +99,6 @@ var shed = angular.module('shed', ['restangular', 'ngRoute','angular.filter','an
 			otherwise({redirectTo: '/'});
 
 
-		RestangularProvider.setBaseUrl('https://api.mongolab.com/api/1/databases/shed_database/collections');
-		RestangularProvider.setDefaultRequestParams({ apiKey: 'Iwy7zOOBBd6lUzN5jBhLNhv68Wv8UfUl' })
-		RestangularProvider.setRestangularFields({
-			id: '_id.$oid'
-		});
-
-		RestangularProvider.setRequestInterceptor(function (elem, operation, what) {
-
-			if (operation === 'put') {
-				elem._id = undefined;
-				return elem;
-			}
-			return elem;
-		})
 	});
   shed.run(function($rootScope, $location,auth) {
     $rootScope.$on( "$routeChangeStart", function(event, next, current) {
@@ -198,7 +192,7 @@ shed.factory('RESTService',
     }
 );
 
-shed.factory('auth' , ['$http','$window','jwtHelper','$q',function($http , $window ,jwtHelper,$q){
+shed.factory('auth' , ['$http','$window','jwtHelper','$q','$location',function($http , $window ,jwtHelper,$q ,$location){
    var auth = {};
 
 
@@ -343,7 +337,9 @@ shed.factory('auth' , ['$http','$window','jwtHelper','$q',function($http , $wind
      };
 
      auth.logOut = function(){
-      $window.localStorage.removeItem('shed-token');
+      $window.sessionStorage.removeItem('shed-token');
+
+
 
      }
       

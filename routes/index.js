@@ -153,6 +153,43 @@ router.get('/profiles/:user',function(req,res){
   });
 });
 
+router.put('/updatesummary/:userid', function(req, res, next) {
+     var user = new User();
+
+     user.summary = req.body.summary;
+     
+    
+    User.update({'_id':req.params.userid}, req.body, {},function (err, post) {
+      if (err) return next(err);
+        res.json(post);
+     });
+
+});
+router.put('/updatebasic/:userid', function(req, res, next) {
+     var user = new User();
+
+     user.fullname = req.body.fullname;
+     user.gender = req.body.gender;
+   
+    User.update({_id:req.params.userid}, req.body, {},function (err, post) {
+      if (err) return next(err);
+        res.json(post);
+     });
+
+});
+router.put('/updatecontact/:userid', function(req, res, next) {
+     var user = new User();
+
+     user.phone = req.body.phone;
+     user.email = req.body.email;
+   
+    User.update({_id:req.params.userid}, req.body, {},function (err, post) {
+      if (err) return next(err);
+        res.json(post);
+     });
+
+});
+
 router.post('/register', function(req, res, next){
   if(!req.body.username || !req.body.password){
     return res.status(400).json({message: 'Please fill out all fields'});

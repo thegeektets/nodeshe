@@ -1,4 +1,4 @@
-function AddBookCtrl ($scope, $location, Restangular,$http,$rootScope,auth) {
+function AddBookCtrl ($scope, $location,$http,$rootScope,auth) {
  
 
  $rootScope.addmanually = 'false';
@@ -16,7 +16,17 @@ function AddBookCtrl ($scope, $location, Restangular,$http,$rootScope,auth) {
    
 });
  
-  $scope.logOut = auth.logOut();
+  $scope.logOut = function(){
+
+  console.log('getting there');
+
+  auth.logOut();
+
+  $location.path('/start');
+
+
+
+}
   $scope.bdclass = "";
    
 

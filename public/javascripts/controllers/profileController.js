@@ -1,5 +1,5 @@
 
-function ListCtrl($scope,$rootScope,$http,auth) {
+function ProfileCtrl($scope,$rootScope,$http,auth,$location) {
 
 
 $scope.users =[];

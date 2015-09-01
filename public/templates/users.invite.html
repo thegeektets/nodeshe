@@ -31,14 +31,12 @@
                         <a data-toggle="dropdown" class="tm-settings" href=""></a>
                         <ul class="dropdown-menu dm-icon pull-right">
                             <li>
-                                <a href="profile-about.html"><i class="md md-person"></i> View Profile</a>
-                            </li>
+                              <a href="#/profile/{{userProfile['0']['_id']}}"><i class="md md-person"></i> View Profile</a>
+                          </li>
             
-                            <li>
-                                <a href=""><i class="md md-settings"></i> Settings</a>
-                            </li>
-                            <li>
-                                <a href=""><i class="md md-history"></i> Logout</a>
+                           
+                           <li>
+                                <a ng-click="logOut()"><i class="md md-history"></i> Logout</a>
                             </li>
                         </ul>
                     </li>
@@ -60,7 +58,7 @@
                     <div class="profile-menu">
                         <a href="">
                             <div class="profile-pic">
-                                <img src="/img/profile-pics/1.jpg" alt="">
+                               <img src=" img/profile-pics/avatar.png" alt="">
                             </div>
 
                             <div class="profile-info">
@@ -72,14 +70,12 @@
 
                         <ul class="main-menu">
                             <li>
-                                <a href="profile-about.html"><i class="md md-person"></i> View Profile</a>
-                            </li>
+                               <a href="#/profile/{{userProfile['0']['_id']}}"><i class="md md-person"></i> View Profile</a>
+                          </li>
                          
+                          
                             <li>
-                                <a href=""><i class="md md-settings"></i> Settings</a>
-                            </li>
-                            <li>
-                                <a href=""><i class="md md-history"></i> Logout</a>
+                                <a ng-click="logOut()"><i class="md md-history"></i> Logout</a>
                             </li>
                         </ul>
                     </div>

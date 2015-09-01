@@ -1,5 +1,5 @@
 
-function RegnwCtrl($scope, $location, Restangular,$http, $route){
+function RegnwCtrl($scope, $location,$http, $route){
    
 
 

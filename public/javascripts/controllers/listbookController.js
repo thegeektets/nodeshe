@@ -1,5 +1,5 @@
 
-function ListBookCtrl($scope, $location, Restangular,$rootScope,$http,auth,$q) {
+function ListBookCtrl($scope, $location,$rootScope,$http,auth,$q) {
 
   $scope.isLoggedIn = auth.isLoggedIn();
   $scope.currentUser = auth.currentUser();
@@ -9,7 +9,17 @@ function ListBookCtrl($scope, $location, Restangular,$rootScope,$http,auth,$q) {
     });
 
   
-  $scope.logOut = auth.logOut();
+  $scope.logOut = function(){
+
+  console.log('getting there');
+
+  auth.logOut();
+
+  $location.path('/start');
+
+
+
+}
   $scope.bdclass = "";
    
  

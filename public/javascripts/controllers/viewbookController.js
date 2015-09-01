@@ -1,4 +1,4 @@
-function ViewBookCtrl($rootScope,$scope, $location, Restangular,$route, $http,auth){
+function ViewBookCtrl($rootScope,$scope, $location,$route, $http,auth){
   
   $scope.isLoggedIn = auth.isLoggedIn();
   $scope.currentUser = auth.currentUser();
@@ -9,7 +9,17 @@ function ViewBookCtrl($rootScope,$scope, $location, Restangular,$route, $http,au
    
 });
 
-  $scope.logOut = auth.logOut();
+  $scope.logOut = function(){
+
+  console.log('getting there');
+
+  auth.logOut();
+
+  $location.path('/start');
+
+
+
+}
   $scope.bdclass = "";
 
   $scope.borrowed = {};

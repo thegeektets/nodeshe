@@ -1,0 +1,271 @@
+  <header id="header">
+            <ul class="header-inner">
+                <li id="menu-trigger" data-trigger="#sidebar">
+                    <div class="line-wrap">
+                        <div class="line top"></div>
+                        <div class="line center"></div>
+                        <div class="line bottom"></div>
+                    </div>
+                </li>
+            
+                <li class="logo hidden-xs">
+                    <a href="#/">SHED</a>
+                </li>
+                
+                <li class="pull-right">
+                <ul class="top-menu">
+                    <li id="toggle-width">
+                        <div class="toggle-switch">
+                            <input id="tw-switch" type="checkbox" hidden="hidden">
+                            <label for="tw-switch" class="ts-helper"></label>
+                        </div>
+                    </li>
+ 
+                    <li id="top-search">
+                        <a class="tm-search" href=""></a>
+                    </li>
+                   
+                    
+                   
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="tm-settings" href=""></a>
+                        <ul class="dropdown-menu dm-icon pull-right">
+                            <li>
+                              <a href="#/profile/{{userProfile['0']['_id']}}"><i class="md md-person"></i> View Profile</a>
+                           </li>
+            
+                  
+                           <li>
+                                <a ng-click="logOut()"><i class="md md-history"></i> Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                      </ul>
+                </li>
+            </ul>
+            
+              
+            <!-- Top Search Content -->
+            <div id="top-search-wrap">
+                <input type="text" ng-model="search">
+                <i id="top-search-close">&times;</i>
+            </div>
+        </header>
+        
+        <section id="main">
+            <aside id="sidebar">
+                <div class="sidebar-inner c-overflow">
+                    <div class="profile-menu">
+                        <a href="">
+                            <div class="profile-pic">
+                                <img src="/img/profile-pics/avatar.png" alt="">
+                            </div>
+
+                            <div class="profile-info">
+                                {{currentUser}} : {{userProfile['0']['usertype']}}
+
+                                <i class="md md-arrow-drop-down"></i>
+                            </div>
+                        </a>
+
+                        <ul class="main-menu">
+                            <li>
+                                   <a href="#/profile/{{userProfile['0']['_id']}}"><i class="md md-person"></i> View Profile</a>
+                             </li>
+                         
+                          <li>
+                                <a ng-click="logOut()"><i class="md md-history"></i> Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <ul class="main-menu">
+                        <li><a href="#/dashboard"><i class="md md-home"></i> Dashboard</a></li>
+                        <li><a href="#/"><i class="md md-my-library-books"></i> Books List</a></li>
+                        <li><a href="#/addbook"><i class="md md-content-copy"></i> Add Book</a></li>
+                        <li><a href="#/borrowed"><i class="md md-today"></i> Borrowed List</a></li>
+                        <li><a href="#/listusers"><i class="md md-person"></i> Library Users</a></li>
+                        <li><a href="#/invite"><i class="md md-person"></i> Invite Users</a></li>
+                        <li><a href=""><i class="md md-my-library-books"></i> Manage Library</a> </li>
+                       
+                       
+                        
+                    </ul>
+                </div>
+            </aside>
+
+
+            <section id="content">
+         
+                <div class="container">
+                    
+                    <div class="block-header">
+                        <h2>   {{userProfile['0']['fullname']}}
+                                     </h2>
+                        
+     
+                    </div>
+                    
+                    <div class="card" id="profile-main">
+                        <div class="pm-overview c-overflow">
+                            <div class="pmo-pic">
+                                <div class="p-relative">
+                                    <a href="">
+                                        <img class="img-responsive" src="img/profile-pics/avatar.png" alt=""> 
+                                    </a>
+         
+                                    
+                                    <a href="" class="pmop-edit">
+                                        <i class="md md-camera-alt"></i> <span class="hidden-xs">Update Profile Picture</span>
+                                    </a>
+                                </div>
+                                
+                                
+                                <div class="pmo-stat">
+                                    <h2 class="m-0 c-white">{{userProfile['0']['username']}}</h2>
+                                   
+                                </div>
+                            </div>
+                            
+                            <div class="pmo-block pmo-contact hidden-xs">
+                                <h2>Contact</h2>
+                                
+                                <ul>
+                                    <li><i class="md md-phone"></i> {{userProfile['0']['phone']}}</li>
+                                    <li><i class="md md-email"></i> {{userProfile['0']['email']}}</li>
+                                   
+                                </ul>
+                            </div>
+                            
+
+                        </div>
+                        
+                        <div class="pm-body clearfix">
+                                  <div ng-show="success" class="alert alert-info alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                Success! update done.
+                                </div>
+                               
+                            <ul class="tab-nav tn-justified">
+                                <li class="active waves-effect"><a href="">About</a></li>
+                            </ul>
+                            
+                            
+                            <div class="pmb-block">
+                                <div class="pmbb-header">
+                                    <h2><i class="md md-equalizer m-r-5"></i> Summary</h2>
+                                    
+                                
+                                </div>
+                                <div class="pmbb-body p-l-30">
+                                    
+                                    <form ng-submit= "updatesummary()">
+   
+                                     <div class="fg-line">
+                                            <textarea class="form-control" rows="5" placeholder="{{userProfile['0']['summary']}}..."
+                                            ng-model="user.summary">
+                                                {{userProfile['0']['summary']}}
+                                            </textarea>
+                                        </div>
+                                        <div class="m-t-10">
+                                            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                                            <button data-pmb-action="reset" class="btn btn-link btn-sm">Cancel</button>
+                                        </div>
+                                    </form>
+                            
+                                </div>
+                            </div>
+                            
+                            <div class="pmb-block">
+                                <div class="pmbb-header">
+                                    <h2><i class="md md-person m-r-5"></i> Basic Information</h2>
+                                    
+                                
+                                </div>
+                                <div class="pmbb-body p-l-30">
+                                       
+                                       <form ng-submit= "updatebasic()">
+   
+                                        <dl class="dl-horizontal">
+                                            <dt class="p-t-10">Full Name</dt>
+                                            <dd>
+                                                <div class="fg-line">
+                                                    <input type="text" class="form-control" placeholder="eg. {{userProfile['0']['fullname']}}"  ng-model="user.fullname">
+                                                </div>
+                                                
+                                            </dd>
+                                        </dl>
+                                        <dl class="dl-horizontal">
+                                            <dt class="p-t-10">Gender</dt>
+                                            <dd>
+                                                <div class="fg-line">
+                                                    <select class="form-control" ng-model="user.gender">
+                                                        <option value="Male">Male</option>
+                                                        <option value="Female">Female</option>
+                                                        <option value="Other">Other</option>
+                                                    </select>
+                                                </div>
+                                            </dd>
+                                        </dl>
+                            
+                                       
+                                        <div class="m-t-30">
+                                            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                                            <button data-pmb-action="reset" class="btn btn-link btn-sm">Cancel</button>
+                                        </div>
+
+                                        </form>
+                                    </div>
+                            
+                            </div>
+                       
+                        
+                            <div class="pmb-block">
+                                <div class="pmbb-header">
+                                    <h2><i class="md md-phone m-r-5"></i> Contact Information</h2>
+                                    
+                                 
+                                </div>
+                                <div class="pmbb-body p-l-30">
+                                        
+                                        <form ng-submit= "updatecontact()">
+   
+                                        <dl class="dl-horizontal">
+                                            <dt class="p-t-10">Mobile Phone</dt>
+                                            <dd>
+                                                <div class="fg-line">
+                                                    <input type="text" class="form-control" placeholder="eg. {{userProfile['0']['phone']}} " ng-model ="user.phone">
+                                                </div>
+                                            </dd>
+                                        </dl>
+                                        <dl class="dl-horizontal">
+                                            <dt class="p-t-10">Email Address</dt>
+                                            <dd>
+                                                <div class="fg-line">
+                                                    <input type="email" class="form-control" placeholder="eg. {{userProfile['0']['email']}}" ng-model ="user.email">
+                                                </div>
+                                            </dd>
+                                        </dl>
+              
+                                        
+                                        <div class="m-t-30">
+                                            <button type = "submit"class="btn btn-primary btn-sm">Save</button>
+                                            <button data-pmb-action="reset" class="btn btn-link btn-sm">Cancel</button>
+                                        </div>
+                                    
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </section>
+      </section>
+ 
+        
+        <footer id="footer">
+            Copyright &copy; 2015 SHED
+            
+         
+        </footer>

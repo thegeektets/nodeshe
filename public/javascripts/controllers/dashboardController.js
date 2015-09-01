@@ -11,7 +11,7 @@
  });
 
 
-function dashCtrl($scope, $location, Restangular,$rootScope,$http,auth) {
+function dashCtrl($scope, $location,$rootScope,$http,auth) {
 
 
   $scope.isLoggedIn = auth.isLoggedIn();
@@ -21,8 +21,17 @@ function dashCtrl($scope, $location, Restangular,$rootScope,$http,auth) {
     $scope.userProfile = data;
     });
 
-  
-  $scope.logOut = auth.logOut();
+  $scope.logOut = function(){
+
+  console.log('getting there');
+
+  auth.logOut();
+
+  $location.path('/start');
+
+
+
+}
   $scope.bdclass = "";
    
  
