@@ -2,10 +2,8 @@
   "name": "nodeshed",
   "version": "0.0.0",
   "private": true,
-
   "scripts": {
-    "start": "forever start --minUptime 1000 --spinSleepTime 1000 ./bin/www"
-    "stop":  "forever stop ./bin/www"
+    "start": "node ./bin/www"
   },
   "dependencies": {
     "body-parser": "~1.13.2",

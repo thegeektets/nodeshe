@@ -104,7 +104,8 @@ var shed = angular.module('shed', ['ngRoute','angular.filter','angularFileUpload
     $rootScope.$on( "$routeChangeStart", function(event, next, current) {
       if (!auth.isLoggedIn()) {
           console.log('login required');
-        if ( next.templateUrl === "template/login.html" || next.templateUrl === "template/register.html"|| next.templateUrl === "template/users.detail.html") {
+        if ( next.templateUrl === "templates/login.html" || next.templateUrl === "templates/register.html"
+          || next.templateUrl === "templates/forgot.html") {
         } else {
           $location.path("/start");
         }
