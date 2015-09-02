@@ -12,6 +12,8 @@ require('./config/passport');
 mongoose.connect('mongodb://root:root@dbh13.mongolab.com:27137/shed_database');
 
 var express = require('express');
+var nodemailer = require('nodemailer');
+
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -22,6 +24,9 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

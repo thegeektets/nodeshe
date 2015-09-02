@@ -1,4 +1,7 @@
 var express = require('express');
+var nodemailer = require('nodemailer');
+
+
 var router = express.Router();
 var mongoose = require('mongoose');
 var Post = mongoose.model('Post');
@@ -7,6 +10,16 @@ var Team = mongoose.model('Team');
 var Book = mongoose.model('Book');
 var Review = mongoose.model('Review');
 var Borrowed = mongoose.model('Borrowed');
+
+
+var transporter = nodemailer.createTransport({
+    service : 'Gmail',
+
+    auth:{
+      user: 'arkshedd@gmail.com',
+    pass: 'ark@shed'
+    }
+});
 
 
 var Comment = mongoose.model('Comment');
@@ -210,6 +223,36 @@ router.post('/register', function(req, res, next){
 
     return res.json({token: user.generateJWT()})
   });
+});
+router.post('/newinvite', function(req, res, next){
+   if(!req.body.email ){
+    return res.status(400).json({message: 'Please fill out all fields'});
+  }
+
+  var user = new User();
+
+  user.email = req.body.email;
+  user.team = req.body.team;
+  user.invitedby = req.body.invitedby;
+  user.invitekey = req.body.invitekey;
+  user.invitename = req.body.invitename;
+  user.link = req.body.link;
+  user.usertype = "normal";
+
+  //user.setPassword(req.body.password);
+
+   transporter.sendMail({
+      from : 'invite@shed.com',
+      to :req.body.email,
+      subject :'Join us at shed..',
+      html:"Hello, "
+  });
+
+   res.json(user);
+   
+
+
+  
 });
 router.get('/team/:name',function(req,res){
  Team.findOne({'admin': req.params.name},function(err, posts){

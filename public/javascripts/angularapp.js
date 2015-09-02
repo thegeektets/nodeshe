@@ -31,13 +31,7 @@ var shed = angular.module('shed', ['ngRoute','angular.filter','angularFileUpload
 
       }).
       
-      when('/registernew/:email/:invite', {
-          controller: RegnwCtrl,
-        templateUrl: 'templates/users.detail.html'
-      
-
-
-      }).
+   
 			when('/addbook', {
 				controller: AddBookCtrl,
 				templateUrl: 'templates/books.add.html'
@@ -240,6 +234,25 @@ shed.factory('auth' , ['$http','$window','jwtHelper','$q','$location',function($
       $http.get('/profiles/'+payload._id).success(function(data){
 
               deferred.resolve(data['0']['invitedby']);
+
+        });
+
+        return deferred.promise;
+      }
+      
+
+   }
+      auth.currentTeam = function(){
+    var usertype ='';
+      var deferred = $q.defer();
+
+      if(auth.isLoggedIn()){
+            var token = auth.getToken();
+        var payload = jwtHelper.decodeToken(token);
+
+      $http.get('/profiles/'+payload._id).success(function(data){
+
+              deferred.resolve(data['0']['team']);
 
         });
 

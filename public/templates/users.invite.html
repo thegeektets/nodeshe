@@ -123,13 +123,17 @@
            
                     
                         <div class="card-body card-padding">
-	<form name="myForm" class="form-horizontal">
-
+<form ng-submit= "invite()" method="post">
+          
+           <div ng-show="error" class="alert alert-danger row">
+            <span>{{ error.message }}</span>
+          </div>
+           
 	  <div class="animated zoomInRight">
 				          <input type="email" ng-model="invitation.email"  class="form-control" placeholder="user email address" autofocus />
 				      	
 		<br>
-		<button ng-click="invite()" ng-disabled="isClean() || $form.invalid"
+		<button type="submit" ng-disabled="isClean() || $form.invalid"
 		        class="btn btn-success"> Invite User
 		</button>
 	</div>
