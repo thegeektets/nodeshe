@@ -1,12 +1,20 @@
 
 
-function InvCtrl($scope, $location,$rootScope,$http,auth) {
+function InvCtrl($scope, $location,$rootScope,$http,auth,$route) {
 
 
 $scope.isLoggedIn = auth.isLoggedIn();
 $scope.currentUser = auth.currentUser();
 $scope.currentId = auth.currentId();
-$scope.currentTeam = auth.currentTeam();
+
+auth.currentTeam().then(function(data) {
+
+$scope.currentTeam = data['0']['team'];
+
+  
+
+
+});  ;
 
 $scope.logOut = function(){
 
@@ -25,6 +33,7 @@ $scope.borrowed = {};
 auth.userType().then(function(data) {
 $scope.userType = data['0']['usertype'];
 
+
 });  
   
 
@@ -37,17 +46,21 @@ $scope.userType = data['0']['usertype'];
         $scope.user.team = $scope.currentTeam;
         $scope.user.invitekey = Math.random().toString(36).substring(7);
 
-        $scope.user.link = $location.host() +'/shed'+'#/registernew/'+$scope.user.invitekey;
+        $scope.user.link = 'http://178.62.36.230/#/inviteregistration/'+$scope.user.invitekey;
+       // $scope.user.link = 'http://localhost:3000/#/inviteregistration/'+$scope.user.invitekey;
 
 
         $http.post('/newinvite', $scope.user).error(function(error){
           $scope.error = error;
-        }).success(function(success){
-
-            $scope.success =  true;
-
-
         });
+
+        $scope.success =  true;
+        $route.reload();
+
+      
+     
+
+
 
         }
 

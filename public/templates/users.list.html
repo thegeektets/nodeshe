@@ -134,7 +134,7 @@
 		</thead>
 		<tbody>
   
-    		<tr ng-repeat="user in users " ng-show="user._id">
+    		<tr ng-repeat="user in users[0] " ng-show="user._id">
 
 			<td>  {{user.username}}</td>
 			<td>{{user.email}}</td>
@@ -145,6 +145,18 @@
 				<a class="btn btn-primary" href="#/profile/{{user._id}}"> View Profile</a>
 			</td>
 		</tr>
+        <tr ng-repeat="user in users[1] " ng-show="user._id">
+        {{user}}
+
+            <td>  {{user.username}}</td>
+            <td>{{user.email}}</td>
+      <td>{{user.usertype}}</td>
+      <td style='display:none'>{{user.invitedby}}</td>
+      <td style='display:none'>{{user._id}}</td>
+            <td ng-if='userType == "admin"'>
+                <a class="btn btn-primary" href="#/profile/{{user._id}}"> View Profile</a>
+            </td>
+        </tr>
     
    
 		</tbody>

@@ -1,5 +1,5 @@
 
-function ListCtrl($scope,$rootScope,$http,auth) {
+function ListCtrl($scope,$rootScope,$http,auth,$location) {
 
 
 $scope.users =[];
@@ -29,7 +29,8 @@ $scope.userType = data['0']['usertype'];
  
  auth.userProfile().then(function(data) {
     $scope.userProfile = data;
- 
+
+
    
     if($scope.userProfile['0']['usertype'] == 'admin'){ 
 
@@ -39,9 +40,15 @@ $scope.userType = data['0']['usertype'];
 
            $scope.people = data;
 
-           $scope.users= angular.extend( $scope.userProfile,$scope.people);
-
+          
             
+           $scope.users[0]= $scope.userProfile;
+
+           $scope.users[1]= $scope.people;
+
+
+
+
 
           });
 
@@ -50,11 +57,21 @@ $scope.userType = data['0']['usertype'];
   else{
        $http.get('/people/'+$scope.userProfile['0']['invitedby']).success(function(data){
 
+
            $scope.people = data;
 
-           $scope.users= angular.extend( $scope.userProfile,$scope.people);
+           $http.get('/getadmin/'+$scope.userProfile['0']['invitedby']).success(function(datas){
+            
 
-          });
+           $scope.users[0]= datas;
+
+           $scope.users[1]=data;
+
+
+           
+
+            });
+        });
       }
 
 });

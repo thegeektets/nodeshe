@@ -23,6 +23,8 @@ UserSchema.methods.setPassword = function(password){
   this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
 };
 
+
+
 UserSchema.methods.validPassword = function(password) {
   var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
 
@@ -39,6 +41,7 @@ UserSchema.methods.generateJWT = function() {
   return jwt.sign({
     _id: this._id,
     username: this.username,
+    team: this.team,
     exp:   Math.floor(new Date().getTime()/1000) + 7*24*60*60,
   }, 'SECRET');
 };

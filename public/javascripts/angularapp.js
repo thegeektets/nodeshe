@@ -10,6 +10,12 @@ var shed = angular.module('shed', ['ngRoute','angular.filter','angularFileUpload
             templateUrl:'templates/register.html',
             controller:'RegCtrl'
         }).
+
+        when('/inviteregistration/:invitekey',{
+            templateUrl:'templates/registerinvite.html',
+            controller:'RegistrationCtrl'
+        }).
+        
         when('/forgot',{
             templateUrl:'templates/forgot.html',
             controller:'ForgCtrl'
@@ -99,7 +105,7 @@ var shed = angular.module('shed', ['ngRoute','angular.filter','angularFileUpload
       if (!auth.isLoggedIn()) {
           console.log('login required');
         if ( next.templateUrl === "templates/login.html" || next.templateUrl === "templates/register.html"
-          || next.templateUrl === "templates/forgot.html") {
+          || next.templateUrl === "templates/forgot.html" ||next.templateUrl === "templates/registerinvite.html") {
         } else {
           $location.path("/start");
         }
@@ -233,7 +239,7 @@ shed.factory('auth' , ['$http','$window','jwtHelper','$q','$location',function($
 
       $http.get('/profiles/'+payload._id).success(function(data){
 
-              deferred.resolve(data['0']['invitedby']);
+              deferred.resolve(data);
 
         });
 
@@ -252,7 +258,7 @@ shed.factory('auth' , ['$http','$window','jwtHelper','$q','$location',function($
 
       $http.get('/profiles/'+payload._id).success(function(data){
 
-              deferred.resolve(data['0']['team']);
+                 deferred.resolve(data);
 
         });
 
@@ -269,8 +275,10 @@ shed.factory('auth' , ['$http','$window','jwtHelper','$q','$location',function($
       if(auth.isLoggedIn()){
             var token = auth.getToken();
         var payload = jwtHelper.decodeToken(token);
+       
+      $http.get('/team/'+payload.team).success(function(data){
 
-      $http.get('/team/'+payload.username).success(function(data){
+
 
           deferred.resolve(data);
 
@@ -337,6 +345,14 @@ shed.factory('auth' , ['$http','$window','jwtHelper','$q','$location',function($
 
      auth.register = function(user){
         return $http.post('/register', user).success(function(data){
+          auth.saveToken(data.token);
+
+        });
+     };
+
+     auth.inviteregister =function(user){
+
+        return $http.put('/registerinvite/'+$route.current.params.invitekey, user).success(function(data){
           auth.saveToken(data.token);
 
         });

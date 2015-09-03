@@ -1,5 +1,17 @@
 var express = require('express');
 var nodemailer = require('nodemailer');
+var mandrillTransport = require('nodemailer-mandrill-transport');
+var smtpTransport = nodemailer.createTransport({
+        service: "Gmail",
+        auth: {
+            user: "arkshedd@gmail.com",
+            pass: "ark@shed"
+        }
+    });
+
+
+
+
 
 
 var router = express.Router();
@@ -12,18 +24,11 @@ var Review = mongoose.model('Review');
 var Borrowed = mongoose.model('Borrowed');
 
 
-var transporter = nodemailer.createTransport({
-    service : 'Gmail',
-
-    auth:{
-      user: 'arkshedd@gmail.com',
-    pass: 'ark@shed'
-    }
-});
 
 
 var Comment = mongoose.model('Comment');
 var passport = require('passport');
+var crypto = require('crypto');
 
 router.post('/borrowbook', function(req, res, next) {
   var borrowed = new Borrowed();
@@ -159,6 +164,13 @@ router.get('/people/:invited',function(req,res){
   });
 });
 
+router.get('/getadmin/:invited',function(req,res){
+ User.find({'_id': req.params.invited},function(err, posts){
+    if(err){return next(err);}
+    res.json(posts);
+  });
+});
+
 router.get('/profiles/:user',function(req,res){
  User.find({'_id': req.params.user},function(err, posts){
     if(err){return next(err);}
@@ -224,6 +236,34 @@ router.post('/register', function(req, res, next){
     return res.json({token: user.generateJWT()})
   });
 });
+router.post('/registerinvite/:invitekey', function(req, res, next){
+  if(!req.body.username || !req.body.password){
+    return res.status(400).json({message: 'Please fill out all fields'});
+  }
+
+User.findOne({invitekey:req.params.invitekey}, function(err, user) {
+  if (!user)
+    return next(new Error('Could not load Document'));
+  else {
+    // do your updates here
+  user.username = req.body.username;
+  user.invitekey = req.body.invitekey;
+   
+  user.salt = crypto.randomBytes(16).toString('hex');
+
+  user.hash = crypto.pbkdf2Sync(req.body.password, user.salt, 1000, 64).toString('hex');
+
+
+  user.save(function(err) {
+      if (err)
+        return next(err);
+      else
+        res.json(post)
+    });
+  }
+});
+
+});
 router.post('/newinvite', function(req, res, next){
    if(!req.body.email ){
     return res.status(400).json({message: 'Please fill out all fields'});
@@ -235,27 +275,37 @@ router.post('/newinvite', function(req, res, next){
   user.team = req.body.team;
   user.invitedby = req.body.invitedby;
   user.invitekey = req.body.invitekey;
-  user.invitename = req.body.invitename;
   user.link = req.body.link;
   user.usertype = "normal";
 
-  //user.setPassword(req.body.password);
+var mail = {
+        from: "SHED WEB APP <noreply@shed.com>",
+        to: req.body.email,
+        subject: "Join us at SHED",
+        html: "<span>Hello,</span><br />you have been invited by "+req.body.invitename+" to join "+req.body.team+" team on SHED an application for managing and sharing books.Click here to <a href='"+req.body.link+"'>Register</a> or copy and paste this url to your browser "+req.body.link
+    
+    }
 
-   transporter.sendMail({
-      from : 'invite@shed.com',
-      to :req.body.email,
-      subject :'Join us at shed..',
-      html:"Hello, "
+ smtpTransport.sendMail(mail, function(error, response){
+        if(error){
+            console.log(error);
+        }else{
+            console.log("Message sent: " + response.message);
+        }
+
+        smtpTransport.close();
+    });
+
+ user.save(function (err){
+    if(err){ return next(err); }
+
+    return  res.json(post);
   });
-
-   res.json(user);
-   
-
 
   
 });
 router.get('/team/:name',function(req,res){
- Team.findOne({'admin': req.params.name},function(err, posts){
+ Team.findOne({'name': req.params.name},function(err, posts){
     if(err){return next(err);}
     res.json(posts);
   });
@@ -289,6 +339,7 @@ router.post('/login', function(req, res, next){
     if(err){ return next(err); }
 
     if(user){
+
       return res.json({token: user.generateJWT()});
     } else {
       return res.status(401).json(info);
