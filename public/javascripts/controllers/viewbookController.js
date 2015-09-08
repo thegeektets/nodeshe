@@ -106,9 +106,8 @@ function ViewBookCtrl($rootScope,$scope, $location,$route, $http,auth){
       });
       
 
-      
-      //$route.reload();
-
+      $location.path('/listbooks');
+  
 
 	};
 
@@ -129,7 +128,7 @@ function ViewBookCtrl($rootScope,$scope, $location,$route, $http,auth){
 
      $scope.myborrowed = null;
 
-      //$route.reload();
+     $location.path('/listbooks');
 
 
 
