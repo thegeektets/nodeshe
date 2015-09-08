@@ -1,8 +1,9 @@
 function AddBookCtrl ($scope, $location,$http,$rootScope,auth) {
- 
 
- $rootScope.addmanually = 'false';
-    $scope.isLoggedIn = auth.isLoggedIn();
+  $scope.book = {};
+
+  $rootScope.addmanually = 'false';
+  $scope.isLoggedIn = auth.isLoggedIn();
   $scope.currentUser = auth.currentUser();
    
  auth.userProfile().then(function(data) {
@@ -68,29 +69,27 @@ function fetch() {
   $scope.book.teamid = $scope.teamId['_id'];
   $scope.book.transaction = $scope.book.copies;
 
- /* if($rootScope.authService.currentUsertype() == 'admin'){
 
-      $scope.book.librarytype = $rootScope.authService.currentTeam()+' Library';
-  
-  }
-  else{
-     $scope.book.librarytype = 'Personal Library';
-  }
-  */
 
   });
 
 
 }
 
-$scope.select = function(){
-  this.setSelectionRange(0, this.value.length);
-}   
-    $scope.book={};
-   
+  
     $scope.save = function () {
-        $scope.book.transaction = $scope.book.copies;
+     
+        if($scope.book.copies.length < 2){
+            
+        
+          $scope.book.copies = "0" + $scope.book.copies;
 
+           console.log($scope.book.copies);
+
+
+        }
+        $scope.book.transaction = $scope.book.copies;
+        
         $http.post('/addbook', $scope.book).error(function(error){
           $scope.error = error;
         });
@@ -99,4 +98,7 @@ $scope.select = function(){
 
       
     }
+      $scope.select = function(){
+      this.setSelectionRange(0, this.value.length);
+      }  
 }

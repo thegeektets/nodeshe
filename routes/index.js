@@ -146,8 +146,8 @@ router.post('/addbook', function(req, res, next) {
   book.description = req.body.description;
   book.category = req.body.category;
   book.librarytype = req.body.librarytype;
-  book.copies = req.body.copies;
-  book.transaction = parseInt(req.body.copies);
+  book.copies = (req.body.copies);
+  book.transaction =(req.body.copies);
   book.teamid = req.body.teamid;
   
   book.save(function(err){

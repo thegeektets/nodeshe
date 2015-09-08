@@ -104,10 +104,10 @@ function ViewBookCtrl($rootScope,$scope, $location,$route, $http,auth){
       $http.put('/updatetransaction/'+$route.current.params.bookId ,$scope.book ).error(function(error){
       $scope.error = error;
       });
-
+      
 
       
-      $route.reload();
+      //$route.reload();
 
 
 	};
@@ -129,7 +129,7 @@ function ViewBookCtrl($rootScope,$scope, $location,$route, $http,auth){
 
      $scope.myborrowed = null;
 
-      $route.reload();
+      //$route.reload();
 
 
 
@@ -145,7 +145,7 @@ function ViewBookCtrl($rootScope,$scope, $location,$route, $http,auth){
         $scope.error = error;
       });
       
-      $route.reload();
+      //$route.reload();
 
 	
 	};
