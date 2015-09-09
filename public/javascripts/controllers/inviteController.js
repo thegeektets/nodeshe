@@ -46,7 +46,7 @@ $scope.userType = data['0']['usertype'];
         $scope.user.team = $scope.currentTeam;
         $scope.user.invitekey = Math.random().toString(36).substring(7);
 
-        $scope.user.link = 'http://178.62.36.230/#/inviteregistration/'+$scope.user.invitekey;
+        $scope.user.link = 'http://178.62.36.230:3000/#/inviteregistration/'+$scope.user.invitekey;
        // $scope.user.link = 'http://localhost:3000/#/inviteregistration/'+$scope.user.invitekey;
 
 

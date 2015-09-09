@@ -99,13 +99,12 @@ function ViewBookCtrl($rootScope,$scope, $location,$route, $http,auth){
     
       $http.post('/borrowbook', $scope.borrowed).error(function(error){
       $scope.error = error;
-      });
+     });
 
-      $http.put('/updatetransaction/'+$route.current.params.bookId ,$scope.book ).error(function(error){
-      $scope.error = error;
-      });
-      
-
+        $http.put('/updatetransaction/'+$route.current.params.bookId ,$scope.book ).error(function(error){
+        $scope.error = error;
+        });
+   
       $location.path('/listbooks');
   
 
@@ -118,19 +117,20 @@ function ViewBookCtrl($rootScope,$scope, $location,$route, $http,auth){
 
     
      $http.put('/updateborrowed/'+$route.current.params.bookId+'/'+auth.currentId() ,$scope.borrowed ).error(function(error){
-      $scope.error = error;
+     $scope.error = error;
       });
 
-     $http.put('/updatetransaction/'+$route.current.params.bookId ,$scope.book ).error(function(error){
-      $scope.error = error;
-      });
+
+    $http.put('/updatetransaction/'+$route.current.params.bookId ,$scope.book ).error(function(error){
+    $scope.error = error;
+        });
+     
+
 
 
      $scope.myborrowed = null;
 
      $location.path('/listbooks');
-
-
 
 	
 	};
