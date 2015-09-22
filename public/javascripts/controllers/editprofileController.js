@@ -1,5 +1,5 @@
 
-function EditProfileCtrl($scope,$rootScope,$http,auth) {
+function EditProfileCtrl($scope,$rootScope,$http,auth,route) {
 
 
 $scope.users =[];
@@ -28,37 +28,13 @@ $scope.userType = data['0']['usertype'];
 
   
  
- auth.userProfile().then(function(data) {
-    $scope.userProfile = data;
- 
    
-    if($scope.userProfile['0']['usertype'] == 'admin'){ 
+ $http.get('/profiles/'+$route.current.params.userId).success(function(data){
 
-    
-
-        $http.get('/people/'+$scope.userProfile['0']['_id']).success(function(data){
-
-           $scope.people = data;
-
-           $scope.users= angular.extend( $scope.userProfile,$scope.people);
-
+ $scope.userProfile = data;
             
+ });
 
-          });
-
-    }
-
-  else{
-       $http.get('/people/'+$scope.userProfile['0']['invitedby']).success(function(data){
-
-           $scope.people = data;
-
-           $scope.users= angular.extend( $scope.userProfile,$scope.people);
-
-          });
-      }
-
-});
 
 $scope.updatesummary = function(){
 
