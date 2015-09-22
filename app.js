@@ -9,7 +9,7 @@ require('./models/Books');
 require('./models/Reviews');
 require('./models/Borroweds');
 require('./config/passport');
-mongoose.connect('mongodb://root:root@dbh13.mongolab.com:27137/shed_database');
+mongoose.connect('mongodb://root:root@ds041633.mongolab.com:41633/shed_database');
 
 var express = require('express');
 var nodemailer = require('nodemailer');
